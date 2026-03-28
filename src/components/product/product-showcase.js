@@ -64,9 +64,7 @@ class ProductShowcase extends HTMLElement {
 
     const scrollByCard = (direction) => {
       const firstCard = this.track.querySelector("[data-showcase-item]");
-      if (!firstCard) {
-        return;
-      }
+      if (!firstCard) return;
 
       const trackStyles = window.getComputedStyle(this.track);
       const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap || "24");
@@ -76,7 +74,6 @@ class ProductShowcase extends HTMLElement {
 
     this.prevButton?.addEventListener("click", () => scrollByCard(-1));
     this.nextButton?.addEventListener("click", () => scrollByCard(1));
-
     this.track.addEventListener("scroll", this.handleTrackScroll, { passive: true });
     window.addEventListener("resize", this.handleResize);
   }
@@ -90,9 +87,7 @@ class ProductShowcase extends HTMLElement {
   }
 
   updateControls() {
-    if (!this.track || !this.prevButton || !this.nextButton) {
-      return;
-    }
+    if (!this.track || !this.prevButton || !this.nextButton) return;
 
     const maxScroll = this.track.scrollWidth - this.track.clientWidth;
     const atStart = this.track.scrollLeft <= 4;

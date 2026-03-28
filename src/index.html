@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body class="min-h-screen overflow-x-hidden grid grid-cols-12">
+    <app-cart></app-cart>
+    <app-mobile-menu></app-mobile-menu>
+    
     <div class="navbar fixed top-0 left-0 w-full max-w-full z-[60] pt-6">
       <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-20 xl:px-24">
         <app-topbar></app-topbar>
@@ -24,14 +27,14 @@
         class="flex-1 w-full max-w-[1400px] mx-auto px-6 lg:px-20 xl:px-24 grid grid-cols-12 gap-10 lg:gap-8 items-center pb-16 lg:pb-20 pt-[190px] md:pt-[210px] lg:pt-[120px]"
       >
         <div
-          class="col-span-12 lg:col-span-6 flex flex-col items-center justify-center font-geist order-first lg:order-last lg:pt-10"
+          class="col-span-12 lg:col-span-6 flex w-full max-w-[320px] mx-auto lg:max-w-none flex-col items-center justify-center font-geist order-first lg:order-last lg:pt-10"
         >
           <span
             class="uppercase tracking-[0.45em] text-[12px] text-zinc-200 mb-2 font-light"
             >COLLECTION</span
           >
           <h1
-            class="text-[3.2rem] md:text-6xl lg:text-[4.5rem] font-light text-white tracking-[0.02em] mb-6 text-center leading-none"
+            class="text-[2.7rem] sm:text-[3.2rem] md:text-6xl lg:text-[4.5rem] font-light text-white tracking-[0.02em] mb-6 text-center leading-none"
           >
             WINTER 24
           </h1>
@@ -70,17 +73,30 @@
     <div class="col-span-12">
       <product-showcase></product-showcase>
     </div>
+    <div class="col-span-12">
+      <product-editorial-showcase></product-editorial-showcase>
+    </div>
+
+    <div class="col-span-12">
+      <app-newsletter></app-newsletter>
+    </div>
+
   </body>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+  <script src="./js/cart.js"></script>
   <script src="./js/index.js"></script>
 
   <script src="./components/layout/app-topbar.js" defer></script>
   <script src="./components/layout/app-header.js" defer></script>
+  <script src="./components/layout/app-cart.js" defer></script>
+  <script src="./components/layout/app-mobile-menu.js" defer></script>
   <script src="./components/product/product-card.js" defer></script>
   <script src="./components/product/product-cardheader.js" defer></script>
+  <script src="./components/product/product-editorial-showcase.js" defer></script>
   <script src="./components/product/product-showcase.js" defer></script>
   <script src="./components/grid-home.js" defer></script>
   <script src="./components/layout/app-info-section.js" defer></script>
+  <script src="./components/layout/app-newsletter.js" defer></script>
 </html>

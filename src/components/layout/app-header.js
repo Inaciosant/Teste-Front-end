@@ -35,6 +35,7 @@ class AppHeader extends HTMLElement {
 		const mobileSearchToggle = this.querySelector("[data-mobile-search-toggle]");
 		const mobileSearchClose = this.querySelector("[data-mobile-search-close]");
 		const accountToggles = this.querySelectorAll("[data-account-toggle]");
+		const cartToggles = this.querySelectorAll("[data-cart-toggle]");
     const navRoot = this.querySelector("[data-nav-root]");
     const searchInput = this.querySelector("[data-search-input]");
 		const mobileSearchInput = this.querySelector("[data-mobile-search-input]");
@@ -60,7 +61,8 @@ class AppHeader extends HTMLElement {
     };
 
 		const toggleMenu = () => {
-			navRoot.classList.toggle("is-menu-open");
+			// Dispara um evento para o componente app-mobile-menu ouvir
+			document.dispatchEvent(new CustomEvent("toggle-mobile-menu"));
 		};
 
 		const closeMenu = () => {
@@ -84,6 +86,10 @@ class AppHeader extends HTMLElement {
 		const toggleAccountMenu = () => {
 			navRoot.classList.toggle("is-account-open");
 			this.accountOverlay?.classList.toggle("is-visible", navRoot.classList.contains("is-account-open"));
+		};
+
+		const toggleCart = () => {
+			document.dispatchEvent(new CustomEvent("toggle-cart"));
 		};
 
 		const closeAccountMenu = () => {
@@ -145,6 +151,17 @@ class AppHeader extends HTMLElement {
 				closeSearch();
 				closeMobileSearch();
 				toggleAccountMenu();
+			});
+		});
+
+		cartToggles.forEach((toggle) => {
+			toggle.addEventListener("click", (event) => {
+				event.preventDefault();
+				closeMenu();
+				closeSearch();
+				closeMobileSearch();
+				closeAccountMenu();
+				toggleCart();
 			});
 		});
 
@@ -247,6 +264,7 @@ class AppHeader extends HTMLElement {
 					<button
 						type="button"
 						aria-label="Sacola"
+						data-cart-toggle
 						class="inline-flex h-[42px] w-[42px] items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20"
 					>
 						<img src="./assets/icons/bag.svg" alt="Sacola" class="w-[11px] h-[15px]" />
@@ -264,22 +282,12 @@ class AppHeader extends HTMLElement {
 					</button>
 					<button
 						type="button"
+						data-cart-toggle
 						aria-label="Sacola"
 						class="inline-flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20"
 					>
 						<img src="./assets/icons/bag.svg" alt="Sacola" class="w-[11px] h-[15px]" />
 					</button>
-				</div>
-
-				<div data-mobile-menu class="mobile-menu-panel absolute left-0 right-0 top-[calc(100%+10px)] z-[70] lg:hidden rounded-[24px] border border-white/10 bg-[rgba(10,10,11,0.96)] px-5 py-4 backdrop-blur-xl">
-					<ul class="flex flex-col gap-3 text-[14px] font-geist text-zinc-100">
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="/categorias">Blusas</a></li>
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Calças</a></li>
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Jaquetas</a></li>
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Sapatos</a></li>
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Óculos</a></li>
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Winter 2024</a></li>
-					</ul>
 				</div>
 
 				<div data-mobile-search-shell class="mobile-search-shell absolute left-3 right-3 top-1/2 z-[80] -translate-y-1/2 lg:hidden">
@@ -302,12 +310,12 @@ class AppHeader extends HTMLElement {
 					</div>
 				</div>
 
-				<div data-account-menu class="account-dropdown absolute inset-x-2 top-1/2 z-[85] -translate-y-1/2 rounded-[999px] border border-[#E7D158]/25 bg-[rgba(10,10,11,0.96)] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl lg:left-auto lg:right-[52px] lg:top-[calc(100%+12px)] lg:w-[216px] lg:translate-y-0 lg:rounded-[22px] lg:border-0 lg:bg-[#efefef] lg:px-6 lg:py-8 lg:backdrop-blur-0">
-					<div class="flex gap-3 lg:flex-col lg:gap-12">
-						<a href="#" class="flex h-[44px] flex-1 items-center justify-center rounded-full border border-[#6f6523] bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[48px] lg:border-0 lg:bg-white lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
+				<div data-account-menu class="account-dropdown absolute inset-x-2 top-1/2 z-[85] -translate-y-1/2 rounded-[999px] border border-[#E7D158]/25 bg-[rgba(10,10,11,0.96)] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl lg:left-auto lg:right-[52px] lg:top-[calc(100%+12px)] lg:h-[200px] lg:w-[200px] lg:translate-y-0 lg:rounded-[22px] lg:border-0 lg:bg-[#efefef] lg:p-0 lg:backdrop-blur-0">
+					<div class="flex gap-3 lg:mx-auto lg:h-full lg:w-[120px] lg:flex-col lg:items-center lg:justify-center lg:gap-[40px]">
+						<a href="#" class="flex h-[40px] flex-1 items-center justify-center rounded-full border border-[#6f6523] bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[40px] lg:w-[120px] lg:flex-none lg:rounded-[59px] lg:border-0 lg:bg-white lg:px-2 lg:py-2 lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
 							Entrar
 						</a>
-						<a href="#" class="flex h-[44px] flex-1 items-center justify-center rounded-full border border-[#6f6523] bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[48px] lg:border-0 lg:bg-white lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
+						<a href="#" class="flex h-[40px] flex-1 items-center justify-center rounded-full border border-[#6f6523] bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[40px] lg:w-[120px] lg:flex-none lg:rounded-[59px] lg:border-0 lg:bg-white lg:px-2 lg:py-2 lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
 							Cadastrar
 						</a>
 					</div>

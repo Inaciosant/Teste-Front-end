@@ -123,6 +123,10 @@
     flex-basis: min(82vw, 320px);
 }
 
+.editorial-card-item {
+    flex-basis: min(72vw, 170px);
+}
+
 [data-nav-root].is-menu-open .mobile-menu-panel {
     opacity: 1;
     transform: translateY(0);
@@ -196,6 +200,11 @@
         margin-right: 0;
     }
 
+    .account-overlay.is-visible {
+        opacity: 0;
+        pointer-events: none;
+    }
+
     .account-dropdown {
         left: 8px;
         right: 8px;
@@ -225,6 +234,10 @@
 
     .showcase-card-item {
         flex-basis: calc((100% - 72px) / 4);
+    }
+
+    .editorial-card-item {
+        flex-basis: calc((100% - 16px) / 2);
     }
 }
 

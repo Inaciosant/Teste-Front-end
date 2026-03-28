@@ -22,31 +22,33 @@ class ProductCard extends HTMLElement {
     const badge = this.getAttribute("badge") || "";
 
     this.innerHTML = `
-      <article class="flex h-full flex-col rounded-[24px] bg-[#f5f3ef] p-3 font-geist shadow-[0_14px_34px_rgba(0,0,0,0.06)]">
-        <div class="relative mb-4 h-[182px] overflow-hidden rounded-[20px] bg-[#d9dbd8] md:h-[188px]">
+      <article class="flex h-full flex-col overflow-hidden rounded-[24px] bg-[#f1f0eb] font-geist transition-shadow hover:shadow-md">
+        <div class="relative h-[250px] md:h-[280px] w-full shrink-0 bg-[#d9dbd8]">
           <img
             src="${image}"
             alt="${title.replace(/<br\s*\/?>/gi, " ")}"
             class="h-full w-full object-cover object-top"
           />
-          <div class="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[11px] font-medium text-zinc-700">
+          <div class="absolute left-4 top-4 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-medium text-zinc-800 shadow-sm">
             ${badge}
           </div>
         </div>
 
-        <div class="px-2 pb-2">
-          <h3 class="mb-3 min-h-[44px] text-[13px] leading-[1.55] text-zinc-600">
+        <div class="flex flex-1 flex-col px-5 pt-5 pb-6">
+          <h3 class="mb-4 text-[14px] font-normal leading-relaxed text-zinc-600">
             ${title}
           </h3>
 
-          <div class="mb-2 flex items-center gap-3">
-            <span class="text-[12px] text-zinc-400 line-through">${oldPrice}</span>
-            <span class="text-[0.95rem] text-zinc-900">${price}</span>
-          </div>
+          <div class="mt-auto">
+            <div class="mb-1.5 flex items-center gap-3">
+              <span class="text-[14px] text-zinc-400 line-through">${oldPrice}</span>
+              <span class="text-[16px] text-zinc-900">${price}</span>
+            </div>
 
-          <p class="text-[11px] text-zinc-700">
-            ${installments}
-          </p>
+            <p class="text-[12px] text-zinc-600">
+              ${installments}
+            </p>
+          </div>
         </div>
       </article>
     `;
