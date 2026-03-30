@@ -1,8 +1,6 @@
 class ProductShowcase extends HTMLElement {
   constructor() {
     super();
-    this.handleResize = this.handleResize.bind(this);
-    this.handleTrackScroll = this.handleTrackScroll.bind(this);
     this.products = [
       {
         title: "Blusa de moletom oversized com mangas bufantes",
@@ -41,71 +39,45 @@ class ProductShowcase extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    this.bindEvents();
-    this.updateControls();
+    this.initCarousel();
     if (window.lucide && typeof window.lucide.createIcons === "function") {
       window.lucide.createIcons();
     }
   }
 
   disconnectedCallback() {
-    this.track?.removeEventListener("scroll", this.handleTrackScroll);
-    window.removeEventListener("resize", this.handleResize);
+    this.swiper?.destroy(true, true);
   }
 
-  bindEvents() {
-    this.track = this.querySelector("[data-showcase-track]");
-    this.prevButton = this.querySelector("[data-showcase-prev]");
-    this.nextButton = this.querySelector("[data-showcase-next]");
+  initCarousel() {
+    const container = this.querySelector("[data-showcase-swiper]");
+    const prevButton = this.querySelector("[data-showcase-prev]");
+    const nextButton = this.querySelector("[data-showcase-next]");
 
-    if (!this.track) {
+    if (!container || !window.Swiper) {
       return;
     }
 
-    const scrollByCard = (direction) => {
-      const firstCard = this.track.querySelector("[data-showcase-item]");
-      if (!firstCard) return;
-
-      const trackStyles = window.getComputedStyle(this.track);
-      const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap || "24");
-      const amount = firstCard.getBoundingClientRect().width + gap;
-      this.track.scrollBy({ left: direction * amount, behavior: "smooth" });
-    };
-
-    this.prevButton?.addEventListener("click", () => scrollByCard(-1));
-    this.nextButton?.addEventListener("click", () => scrollByCard(1));
-    this.track.addEventListener("scroll", this.handleTrackScroll, { passive: true });
-    window.addEventListener("resize", this.handleResize);
-  }
-
-  handleTrackScroll() {
-    this.updateControls();
-  }
-
-  handleResize() {
-    this.updateControls();
-  }
-
-  updateControls() {
-    if (!this.track || !this.prevButton || !this.nextButton) return;
-
-    const maxScroll = this.track.scrollWidth - this.track.clientWidth;
-    const atStart = this.track.scrollLeft <= 4;
-    const atEnd = this.track.scrollLeft >= maxScroll - 4;
-
-    this.prevButton.disabled = atStart;
-    this.nextButton.disabled = atEnd;
-    this.prevButton.classList.toggle("opacity-40", atStart);
-    this.nextButton.classList.toggle("opacity-40", atEnd);
-    this.prevButton.classList.toggle("cursor-not-allowed", atStart);
-    this.nextButton.classList.toggle("cursor-not-allowed", atEnd);
+    this.swiper = new window.Swiper(container, {
+      slidesPerView: "auto",
+      spaceBetween: 24,
+      navigation: {
+        prevEl: prevButton,
+        nextEl: nextButton
+      },
+      breakpoints: {
+        1024: {
+          allowTouchMove: false
+        }
+      }
+    });
   }
 
   renderCards() {
     return this.products
       .map(
         (product) => `
-          <div data-showcase-item class="showcase-card-item min-w-0 shrink-0 snap-start">
+          <div data-showcase-item class="swiper-slide showcase-card-item min-w-0 shrink-0">
             <product-card
               title="${product.title}"
               image="${product.image}"
@@ -142,8 +114,10 @@ class ProductShowcase extends HTMLElement {
             </div>
           </div>
 
-          <div data-showcase-track class="hide-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2">
-            ${this.renderCards()}
+          <div data-showcase-swiper class="swiper w-full overflow-hidden pb-2">
+            <div class="swiper-wrapper">
+              ${this.renderCards()}
+            </div>
           </div>
         </div>
       </section>

@@ -7,20 +7,16 @@ class AppMobileMenu extends HTMLElement {
   bindEvents() {
     this.menuRoot = this.querySelector("[data-menu-root]");
     const closeBtn = this.querySelector("[data-menu-close]");
-
-    // Escuta o evento disparado pelo Header
     document.addEventListener("toggle-mobile-menu", () => {
       this.openMenu();
     });
 
-    // Fecha ao clicar no X
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         this.closeMenu();
       });
     }
 
-    // Fecha se apertar ESC
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && !this.menuRoot.classList.contains("hidden")) {
         this.closeMenu();
@@ -32,7 +28,7 @@ class AppMobileMenu extends HTMLElement {
     if (this.menuRoot) {
       this.menuRoot.classList.remove("hidden");
       this.menuRoot.classList.add("flex");
-      document.body.style.overflow = "hidden"; // Trava rolagem do fundo
+      document.body.style.overflow = "hidden"; 
     }
   }
 
@@ -40,7 +36,7 @@ class AppMobileMenu extends HTMLElement {
     if (this.menuRoot) {
       this.menuRoot.classList.add("hidden");
       this.menuRoot.classList.remove("flex");
-      document.body.style.overflow = ""; // Destrava rolagem
+      document.body.style.overflow = ""; 
     }
   }
 

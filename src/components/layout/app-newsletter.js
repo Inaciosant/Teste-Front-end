@@ -30,7 +30,7 @@ class AppNewsletter extends HTMLElement {
 
     render() {
         this.innerHTML = `
-            <section class="w-full px-4 lg:px-9 py-6">
+            <section class="w-full max-w-7xl mx-auto px-4 lg:px-9 py-6">
                 <div class="flex flex-col xl:flex-row items-center justify-between w-full bg-[#E7D158] rounded-[24px] xl:rounded-full px-6 py-6 xl:px-8 xl:py-3 gap-6 xl:gap-4">
                     
                     <div class="flex flex-col xl:flex-row items-center gap-2 xl:gap-10 text-center xl:text-left shrink-0">

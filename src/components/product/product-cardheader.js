@@ -1,7 +1,6 @@
 class ProductCardHeader extends HTMLElement {
 	constructor() {
 		super();
-		this.currentIndex = 0;
 		this.products = [
 			{
 				title: "Blusa de moletom oversized com<br />mangas bufantes",
@@ -20,104 +19,74 @@ class ProductCardHeader extends HTMLElement {
 				discount: "15% off"
 			}
 		];
-		this.handleMobileScroll = this.handleMobileScroll.bind(this);
-		this.handleResize = this.handleResize.bind(this);
 	}
 
 	connectedCallback() {
 		this.render();
-		this.bindEvents();
-		this.updateDesktopCard();
-		this.updateMobileProgress();
+		this.initCarousels();
 		if (window.lucide && typeof window.lucide.createIcons === "function") {
 			window.lucide.createIcons();
 		}
 	}
 
 	disconnectedCallback() {
-		if (this.mobileScroller) {
-			this.mobileScroller.removeEventListener("scroll", this.handleMobileScroll);
-		}
-		window.removeEventListener("resize", this.handleResize);
+		this.desktopSwiper?.destroy(true, true);
+		this.mobileSwiper?.destroy(true, true);
 	}
 
-	bindEvents() {
-		const prev = this.querySelector("[data-action='prev']");
-		const next = this.querySelector("[data-action='next']");
-		this.mobileScroller = this.querySelector("[data-mobile-scroller]");
+	initCarousels() {
+		if (!window.Swiper) {
+			return;
+		}
 
-		if (prev) {
-			prev.addEventListener("click", (event) => {
-				event.preventDefault();
-				this.currentIndex = (this.currentIndex - 1 + this.products.length) % this.products.length;
-				this.updateDesktopCard();
+		const desktopContainer = this.querySelector("[data-desktop-swiper]");
+		const mobileContainer = this.querySelector("[data-mobile-swiper]");
+		const prevButton = this.querySelector("[data-action='prev']");
+		const nextButton = this.querySelector("[data-action='next']");
+		const pagination = this.querySelector("[data-desktop-pagination]");
+
+		if (desktopContainer) {
+			this.desktopSwiper = new window.Swiper(desktopContainer, {
+				slidesPerView: 1,
+				spaceBetween: 0,
+				navigation: {
+					prevEl: prevButton,
+					nextEl: nextButton
+				},
+				pagination: {
+					el: pagination,
+					clickable: true,
+					bulletClass: "product-header-bullet",
+					bulletActiveClass: "is-active"
+				}
 			});
 		}
 
-		if (next) {
-			next.addEventListener("click", (event) => {
-				event.preventDefault();
-				this.currentIndex = (this.currentIndex + 1) % this.products.length;
-				this.updateDesktopCard();
+		if (mobileContainer) {
+			this.mobileSwiper = new window.Swiper(mobileContainer, {
+				slidesPerView: "auto",
+				spaceBetween: 20,
+				on: {
+					init: () => this.updateMobileProgress(),
+					slideChange: () => this.updateMobileProgress(),
+					resize: () => this.updateMobileProgress()
+				}
 			});
 		}
-
-		if (this.mobileScroller) {
-			this.mobileScroller.addEventListener("scroll", this.handleMobileScroll, { passive: true });
-		}
-
-		window.addEventListener("resize", this.handleResize);
-	}
-
-	handleMobileScroll() {
-		this.updateMobileProgress();
-	}
-
-	handleResize() {
-		this.updateMobileProgress();
-	}
-
-	updateDesktopCard() {
-		const product = this.products[this.currentIndex];
-		const image = this.querySelector("[data-product-image]");
-		const title = this.querySelector("[data-product-title]");
-		const oldPrice = this.querySelector("[data-product-old-price]");
-		const price = this.querySelector("[data-product-price]");
-		const installments = this.querySelector("[data-product-installments]");
-		const badge = this.querySelector("[data-product-badge]");
-		const dots = this.querySelectorAll("[data-dot-index]");
-
-		if (image) {
-			image.style.opacity = "0.35";
-			setTimeout(() => {
-				image.src = product.image;
-				image.style.opacity = "1";
-			}, 140);
-		}
-
-		if (title) title.innerHTML = product.title;
-		if (oldPrice) oldPrice.textContent = product.oldPrice;
-		if (price) price.textContent = product.price;
-		if (installments) installments.innerHTML = product.installments;
-		if (badge) badge.textContent = product.discount;
-
-		dots.forEach((dot, index) => {
-			dot.classList.toggle("bg-[#E7D158]", index === this.currentIndex);
-			dot.classList.toggle("bg-zinc-800", index !== this.currentIndex);
-		});
 	}
 
 	updateMobileProgress() {
 		const progress = this.querySelector("[data-mobile-progress]");
 
-		if (!progress || !this.mobileScroller) {
+		if (!progress || !this.mobileSwiper) {
 			return;
 		}
 
-		const totalWidth = this.mobileScroller.scrollWidth;
-		const visibleWidth = this.mobileScroller.clientWidth;
-		const scrolledWidth = this.mobileScroller.scrollLeft + visibleWidth;
-		const percent = totalWidth <= 0 ? 100 : Math.min((scrolledWidth / totalWidth) * 100, 100);
+		const totalSlides = this.products.length;
+		const visibleSlides = this.mobileSwiper.slidesPerViewDynamic();
+		const percent = totalSlides <= 0
+			? 100
+			: Math.min(((this.mobileSwiper.activeIndex + visibleSlides) / totalSlides) * 100, 100);
 
 		progress.style.width = `${percent}%`;
 		progress.style.transform = "translateX(0)";
@@ -126,24 +95,24 @@ class ProductCardHeader extends HTMLElement {
 	renderMobileCards() {
 		return this.products
 			.map((product) => `
-				<article class="product-card-mobile snap-start shrink-0 rounded-[24px] bg-[#111111] px-4 pt-4 pb-5 shadow-2xl">
-					<div class="relative h-[246px] w-full overflow-hidden rounded-[20px] bg-zinc-200">
+				<article class="swiper-slide product-card-mobile shrink-0 flex h-[454px] w-[302px] flex-col rounded-[24px] bg-[#111111] p-4 shadow-2xl">
+					<div class="relative h-[250px] md:h-[280px] w-full shrink-0 overflow-hidden rounded-[20px] bg-zinc-200">
 						<img
 							src="${product.image}"
 							class="h-full w-full object-cover object-top"
 							alt="Blusa de moletom"
 						/>
-						<div class="absolute top-3 left-3 rounded-full bg-white px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-900">
+						<div class="absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-900">
 							${product.discount}
 						</div>
 					</div>
 
-					<div class="pt-4">
+					<div class="flex flex-1 flex-col pt-4">
 						<h3 class="mb-4 min-h-[48px] text-[13px] leading-[1.55] text-zinc-400">
 							${product.title}
 						</h3>
 
-						<div class="mb-2.5 flex items-center gap-3">
+						<div class="mb-2.5 mt-auto flex items-center gap-3">
 							<span class="text-[13px] text-zinc-600 line-through">${product.oldPrice}</span>
 							<span class="text-[1rem] text-[#E7D158]">${product.price}</span>
 						</div>
@@ -157,15 +126,47 @@ class ProductCardHeader extends HTMLElement {
 			.join("");
 	}
 
-	render() {
-		const product = this.products[this.currentIndex];
-		const desktopDots = this.products
-			.map((_, index) => `<div data-dot-index="${index}" class="h-[3px] w-7 rounded-full ${index === this.currentIndex ? "bg-[#E7D158]" : "bg-zinc-800"}"></div>`)
-			.join("");
+	renderDesktopSlides() {
+		return this.products
+			.map((product) => `
+				<div class="swiper-slide">
+					<div class="relative flex h-[454px] w-[302px] flex-col overflow-visible rounded-[30px] bg-[#121212] shadow-2xl">
+						<div class="relative h-[250px] md:h-[280px] w-full shrink-0 bg-zinc-200">
+							<img
+								src="${product.image}"
+								class="h-full w-full object-cover object-top"
+								alt="Blusa de moletom"
+							/>
 
+							<div class="absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-900">
+								${product.discount}
+							</div>
+						</div>
+
+						<div class="flex flex-1 flex-col px-6 pt-5 pb-6">
+							<h3 class="mb-4 min-h-[48px] text-[13px] leading-[1.55] text-zinc-400">
+								${product.title}
+							</h3>
+
+							<div class="mb-2.5 mt-auto flex items-center gap-3">
+								<span class="text-[13px] text-zinc-600 line-through">${product.oldPrice}</span>
+								<span class="text-[0.95rem] text-[#E7D158]">${product.price}</span>
+							</div>
+
+							<p class="text-[12px] text-zinc-500">
+								${product.installments}
+							</p>
+						</div>
+					</div>
+				</div>
+			`)
+			.join("");
+	}
+
+	render() {
 		this.innerHTML = `
 		<div class="font-geist">
-			<div class="hidden w-[300px] flex-col gap-4 sm:w-[332px] lg:flex">
+			<div class="relative hidden w-[302px] flex-col gap-4 lg:flex">
 				<div class="flex w-full items-center justify-between px-1">
 					<h2 class="text-[1rem] text-zinc-100">Winter 24 Collection</h2>
 					<a href="#" class="rounded-full border border-[#E7D158] px-4 py-1.5 text-[12px] text-[#E7D158] transition-colors hover:bg-[#E7D158] hover:text-black">
@@ -173,46 +174,20 @@ class ProductCardHeader extends HTMLElement {
 					</a>
 				</div>
 
-				<div class="relative w-full overflow-visible rounded-[30px] bg-[#121212] shadow-2xl">
-					<div class="relative h-[302px] w-full bg-zinc-200">
-						<img
-							data-product-image
-							src="${product.image}"
-							class="h-full w-full object-cover object-top transition-opacity duration-300"
-							alt="Blusa de moletom"
-						/>
-
-						<div data-product-badge class="absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-900">
-							${product.discount}
-						</div>
-
-						<button data-action="prev" class="absolute -left-[22px] top-1/2 z-10 flex h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[rgba(78,78,78,0.68)] text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)]">
-							<i data-lucide="chevron-left" class="h-4 w-4"></i>
-						</button>
-						<button data-action="next" class="absolute -right-[22px] top-1/2 z-10 flex h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[rgba(78,78,78,0.68)] text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)]">
-							<i data-lucide="chevron-right" class="h-4 w-4"></i>
-						</button>
-					</div>
-
-					<div class="px-6 pt-5 pb-6">
-						<h3 data-product-title class="mb-4 min-h-[48px] text-[13px] leading-[1.55] text-zinc-400">
-							${product.title}
-						</h3>
-
-						<div class="mb-2.5 flex items-center gap-3">
-							<span data-product-old-price class="text-[13px] text-zinc-600 line-through">${product.oldPrice}</span>
-							<span data-product-price class="text-[0.95rem] text-[#E7D158]">${product.price}</span>
-						</div>
-
-						<p data-product-installments class="text-[12px] text-zinc-500">
-							${product.installments}
-						</p>
+				<div data-desktop-swiper class="swiper w-full overflow-hidden rounded-[30px]">
+					<div class="swiper-wrapper">
+						${this.renderDesktopSlides()}
 					</div>
 				</div>
 
-				<div class="mt-1 flex items-center justify-center gap-1.5">
-					${desktopDots}
-				</div>
+				<button data-action="prev" class="absolute left-[-22px] top-[50%] z-10 hidden h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[rgba(78,78,78,0.68)] text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)] lg:flex">
+					<i data-lucide="chevron-left" class="h-4 w-4"></i>
+				</button>
+				<button data-action="next" class="absolute right-[-22px] top-[50%] z-10 hidden h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[rgba(78,78,78,0.68)] text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)] lg:flex">
+					<i data-lucide="chevron-right" class="h-4 w-4"></i>
+				</button>
+
+				<div data-desktop-pagination class="mt-1 flex items-center justify-center gap-1.5"></div>
 			</div>
 
 			<div class="flex w-full max-w-[420px] flex-col gap-5 overflow-hidden lg:hidden">
@@ -223,8 +198,10 @@ class ProductCardHeader extends HTMLElement {
 					</a>
 				</div>
 
-				<div data-mobile-scroller class="hide-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-10">
-					${this.renderMobileCards()}
+				<div data-mobile-swiper class="swiper w-full overflow-hidden pb-2 pr-10">
+					<div class="swiper-wrapper">
+						${this.renderMobileCards()}
+					</div>
 				</div>
 
 				<div class="relative mx-auto h-[3px] w-[56px] overflow-hidden rounded-full bg-[#5c5630]">

@@ -8,13 +8,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
 
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body class="min-h-screen overflow-x-hidden grid grid-cols-12">
     <app-cart></app-cart>
     <app-mobile-menu></app-mobile-menu>
-    
+
     <div class="navbar fixed top-0 left-0 w-full max-w-full z-[60] pt-6">
       <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-20 xl:px-24">
         <app-topbar></app-topbar>
@@ -76,14 +80,48 @@
     <div class="col-span-12">
       <product-editorial-showcase></product-editorial-showcase>
     </div>
+    <div class="col-span-12">
+  <section class="mx-auto max-w-6xl p-4 font-geist md:p-8">
+  <div class="flex flex-col overflow-hidden rounded-[32px] bg-[#F9F8F4] md:flex-row">
+    
+    <div class="min-h-[300px] w-full md:w-[40%] md:min-h-[400px]">
+      <img 
+        src="./assets/images/banners/destak.png" 
+        alt="Nossos destaques" 
+        class="h-full w-full object-cover"
+      />
+    </div>
+
+    <div class="flex w-full flex-col justify-center p-6 md:w-[60%] md:p-16">
+      <h2 class="mb-3 text-xl font-medium text-gray-800 md:text-2xl">
+        Nossos destaques
+      </h2>
+      
+      <p class="mb-6 max-w-md text-sm leading-relaxed text-gray-500">
+        Separamos uma seleção dos produtos mais vistos e mais comprados. Aqui você alimenta sua inspiração para continuar sempre na moda.
+      </p>
+
+      <div>
+        <button class="rounded-full bg-[#EBD96B] px-6 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-[#d9c75a]">
+          Confira!
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+    </div>
 
     <div class="col-span-12">
       <app-newsletter></app-newsletter>
     </div>
-
+    <div class="col-span-12">
+      <app-footer></app-footer>
+    </div>
   </body>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   <script src="./js/cart.js"></script>
   <script src="./js/index.js"></script>
@@ -94,9 +132,13 @@
   <script src="./components/layout/app-mobile-menu.js" defer></script>
   <script src="./components/product/product-card.js" defer></script>
   <script src="./components/product/product-cardheader.js" defer></script>
-  <script src="./components/product/product-editorial-showcase.js" defer></script>
+  <script
+    src="./components/product/product-editorial-showcase.js"
+    defer
+  ></script>
   <script src="./components/product/product-showcase.js" defer></script>
   <script src="./components/grid-home.js" defer></script>
   <script src="./components/layout/app-info-section.js" defer></script>
   <script src="./components/layout/app-newsletter.js" defer></script>
+  <script src="./components/layout/app-footer.js" defer></script>
 </html>
