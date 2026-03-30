@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categoria | Lime</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body class="min-h-screen overflow-x-hidden grid grid-cols-12 bg-[#f3f3f3]">
+    <app-cart></app-cart>
+    <app-mobile-menu></app-mobile-menu>
+
+    <div class="navbar fixed top-0 left-0 w-full max-w-full z-[60] pt-6">
+      <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-20 xl:px-24">
+        <app-topbar></app-topbar>
+        <app-header></app-header>
+      </div>
+    </div>
+
+    <main class="col-span-12 pt-[175px] md:pt-[190px]">
+      <section class="mx-auto mb-3 w-full max-w-[1400px] px-6 lg:px-20 xl:px-24">
+        <app-breadcrumb
+          align="left"
+          items="[{ 'label': 'Home', 'url': './index.html' }, { 'label': 'Blusas' }]"
+        ></app-breadcrumb>
+      </section>
+
+      <app-category-page></app-category-page>
+    </main>
+
+    <div class="col-span-12">
+      <info-section></info-section>
+    </div>
+
+    <div class="col-span-12 mt-16">
+      <app-newsletter></app-newsletter>
+    </div>
+
+    <div class="col-span-12">
+      <app-footer2></app-footer2>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="./js/cart.js"></script>
+    <script src="./js/index.js"></script>
+
+    <script src="./components/layout/app-topbar.js" defer></script>
+    <script src="./components/layout/app-header.js" defer></script>
+    <script src="./components/layout/app-cart.js" defer></script>
+    <script src="./components/layout/app-mobile-menu.js" defer></script>
+    <script src="./components/layout/app-breadcrumb.js" defer></script>
+    <script src="./components/product/product-card.js" defer></script>
+    <script src="./components/category/app-filter-mobile.js" defer></script>
+    <script src="./components/category/app-category-page.js" defer></script>
+    <script src="./components/layout/app-info-section.js" defer></script>
+    <script src="./components/layout/app-newsletter.js" defer></script>
+    <script src="./components/layout/footer/app-footer2.js" defer></script>
+  </body>
+</html>

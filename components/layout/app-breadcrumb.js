@@ -4,7 +4,7 @@ class AppBreadcrumb extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['items'];
+    return ["items", "align"];
   }
 
   attributeChangedCallback() {
@@ -13,6 +13,7 @@ class AppBreadcrumb extends HTMLElement {
 
   render() {
     const itemsRaw = this.getAttribute("items") || "[]";
+    const align = this.getAttribute("align") === "left" ? "justify-start" : "justify-center";
     let items = [];
 
     try {
@@ -22,7 +23,7 @@ class AppBreadcrumb extends HTMLElement {
     }
 
     this.innerHTML = `
-      <nav class="flex w-full flex-wrap items-center justify-center font-geist text-[13px] font-normal leading-none tracking-[-0.2px] md:text-[14px]">
+      <nav class="flex w-full flex-wrap items-center ${align} font-geist text-[13px] font-normal leading-none tracking-[-0.2px] md:text-[14px]">
         ${items.map((item, index) => {
           const isLast = index === items.length - 1;
           

@@ -224,7 +224,7 @@ class AppHeader extends HTMLElement {
 						class="flex w-full items-center gap-12 pr-12 whitespace-nowrap text-[14px] font-light font-geist transition-all duration-300"
 						data-nav-links
 					>
-						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="/categorias">Blusas</a></li>
+						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="./categoria.html">Blusas</a></li>
 						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Calças</a></li>
 						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Jaquetas</a></li>
 						<li><a class="transition-colors duration-200 hover:text-[#d8cc5b]" href="#">Sapatos</a></li>

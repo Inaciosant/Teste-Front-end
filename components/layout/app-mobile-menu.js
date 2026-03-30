@@ -74,7 +74,7 @@ class AppMobileMenu extends HTMLElement {
 
               <ul class="mt-6 flex flex-col px-2 text-[14px] font-geist text-zinc-800">
                   <li>
-                      <a href="/categorias" class="flex items-center justify-between py-3.5 transition-colors hover:text-[#d8cc5b]">
+                      <a href="./categoria.html" class="flex items-center justify-between py-3.5 transition-colors hover:text-[#d8cc5b]">
                           Blusas
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-600"><polyline points="6 9 12 15 18 9"></polyline></svg>
                       </a>

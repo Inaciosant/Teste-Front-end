@@ -30,7 +30,6 @@ class AppLoginForm extends HTMLElement {
     const isPasswordValid = this.validateField(this.passwordInput);
 
     if (!isEmailValid || !isPasswordValid) {
-      this.setFormMessage("Confira os campos destacados para continuar.", "error");
       return;
     }
 
