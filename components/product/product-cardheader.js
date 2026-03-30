@@ -95,7 +95,7 @@ class ProductCardHeader extends HTMLElement {
 	renderMobileCards() {
 		return this.products
 			.map((product) => `
-				<article class="swiper-slide product-card-mobile shrink-0 flex h-[454px] w-[302px] flex-col rounded-[24px] bg-[#111111] p-4 shadow-2xl">
+					<article class="swiper-slide product-card-mobile shrink-0 flex h-[454px] w-[302px] max-w-full flex-col rounded-[24px] bg-[#111111] p-4 shadow-2xl">
 					<div class="relative h-[250px] md:h-[280px] w-full shrink-0 overflow-hidden rounded-[20px] bg-zinc-200">
 						<img
 							src="${product.image}"
@@ -190,15 +190,15 @@ class ProductCardHeader extends HTMLElement {
 				<div data-desktop-pagination class="mt-1 flex items-center justify-center gap-1.5"></div>
 			</div>
 
-			<div class="flex w-full max-w-[420px] flex-col gap-5 overflow-hidden lg:hidden">
-				<div class="flex w-full items-center justify-between gap-4 px-1">
-					<h2 class="text-[0.98rem] text-zinc-100">Winter 24 Collection</h2>
-					<a href="#" class="rounded-full border border-[#E7D158] px-4 py-1.5 text-[12px] text-[#E7D158] transition-colors hover:bg-[#E7D158] hover:text-black">
+				<div class="flex w-full max-w-full flex-col gap-5 overflow-hidden sm:max-w-[420px] lg:hidden">
+				<div class="flex w-full min-w-0 items-start justify-between gap-2 px-1 max-[360px]:flex-col max-[360px]:items-start max-[360px]:gap-2.5">
+					<h2 class="min-w-0 flex-1 break-words text-[0.92rem] leading-tight text-zinc-100 max-[360px]:w-full max-[320px]:text-[0.82rem]">Winter 24 Collection</h2>
+					<a href="#" class="shrink-0 rounded-full border border-[#E7D158] px-3 py-1.5 text-[12px] text-[#E7D158] transition-colors hover:bg-[#E7D158] hover:text-black max-[360px]:self-start max-[320px]:px-2.5 max-[320px]:text-[11px]">
 						Veja mais!
 					</a>
 				</div>
 
-				<div data-mobile-swiper class="swiper w-full overflow-hidden pb-2 pr-10">
+					<div data-mobile-swiper class="swiper w-full overflow-hidden pb-2 pr-2 sm:pr-6">
 					<div class="swiper-wrapper">
 						${this.renderMobileCards()}
 					</div>

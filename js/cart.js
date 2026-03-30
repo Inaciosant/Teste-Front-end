@@ -1,7 +1,7 @@
 // cart.js
 const CART_KEY = 'lime_cart_items';
 
-export const Cart = {
+const Cart = {
     getItems() {
         return JSON.parse(localStorage.getItem(CART_KEY)) || [];
     },
@@ -40,3 +40,5 @@ export const Cart = {
         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
     }
 };
+
+window.Cart = Cart;

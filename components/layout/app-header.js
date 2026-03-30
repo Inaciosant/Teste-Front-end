@@ -61,7 +61,6 @@ class AppHeader extends HTMLElement {
     };
 
 		const toggleMenu = () => {
-			// Dispara um evento para o componente app-mobile-menu ouvir
 			document.dispatchEvent(new CustomEvent("toggle-mobile-menu"));
 		};
 
@@ -197,7 +196,7 @@ class AppHeader extends HTMLElement {
 				class="relative mt-2 flex w-full items-center justify-between gap-4 overflow-visible rounded-[40px] bg-[rgba(10,10,11,0.88)] px-4 py-2 pl-5 text-zinc-100 backdrop-blur-md h-[72px] lg:mt-0 lg:h-[76px] lg:px-10 lg:pl-10"
 				data-nav-root
 			>
-				<div class="hidden lg:block shrink-0 text-[2rem] font-extralight leading-none tracking-[0.42em] text-[#d8cc5b]">LIME</div>
+				<a class="hidden lg:block shrink-0 text-[2rem] font-extralight leading-none tracking-[0.42em] text-[#d8cc5b]" href="/">LIME</a>
 
 				<div data-mobile-left class="lg:hidden flex shrink-0 items-center gap-2 transition-all duration-200">
 					<button
@@ -206,19 +205,19 @@ class AppHeader extends HTMLElement {
 						data-menu-toggle
 						class="inline-flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20"
 					>
-						<i data-lucide="menu" class="h-4 w-4"></i>
+						<img src="./assets/icons/menu.svg" alt="Abrir menu" class="h-[14px] w-[14px]" />
 					</button>
 					<button
 						type="button"
 						aria-label="Conta"
 						data-account-toggle
-						class="inline-flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20"
+						class="inline-flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20 focus:outline-none focus-visible:ring-0"
 					>
 						<img src="./assets/icons/user.svg" alt="Conta" class="w-[13px] h-[14px]" />
 					</button>
 				</div>
 
-				<div data-mobile-logo class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden text-[2rem] font-extralight leading-none tracking-[0.42em] text-[#d8cc5b] transition-all duration-200">LIME</div>
+				<a data-mobile-logo class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden text-[1.55rem] font-extralight leading-none tracking-[0.3em] text-[#d8cc5b] transition-all duration-200" href="/">LIME</a>
 
 				<div class="relative hidden lg:flex h-10 min-w-0 flex-1 items-center pl-10" data-center-zone>
 					<ul
@@ -310,12 +309,12 @@ class AppHeader extends HTMLElement {
 					</div>
 				</div>
 
-				<div data-account-menu class="account-dropdown absolute inset-x-2 top-1/2 z-[85] -translate-y-1/2 rounded-[999px] border border-[#E7D158]/25 bg-[rgba(10,10,11,0.96)] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl lg:left-auto lg:right-[52px] lg:top-[calc(100%+12px)] lg:h-[200px] lg:w-[200px] lg:translate-y-0 lg:rounded-[22px] lg:border-0 lg:bg-[#efefef] lg:p-0 lg:backdrop-blur-0">
+				<div data-account-menu class="account-dropdown absolute inset-x-2 top-1/2 z-[85] -translate-y-1/2 rounded-[999px] border border-transparent bg-[rgba(10,10,11,0.96)] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl lg:left-auto lg:right-[52px] lg:top-[calc(100%+12px)] lg:h-[200px] lg:w-[200px] lg:translate-y-0 lg:rounded-[22px] lg:border-0 lg:bg-[#efefef] lg:p-0 lg:backdrop-blur-0">
 					<div class="flex gap-3 lg:mx-auto lg:h-full lg:w-[120px] lg:flex-col lg:items-center lg:justify-center lg:gap-[40px]">
-						<a href="#" class="flex h-[40px] flex-1 items-center justify-center rounded-full border border-[#6f6523] bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[40px] lg:w-[120px] lg:flex-none lg:rounded-[59px] lg:border-0 lg:bg-white lg:px-2 lg:py-2 lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
+						<a href="./login.html" class="flex h-[40px] flex-1 items-center justify-center rounded-full border border-transparent bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[40px] lg:w-[120px] lg:flex-none lg:rounded-[59px] lg:border-0 lg:bg-white lg:px-2 lg:py-2 lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
 							Entrar
 						</a>
-						<a href="#" class="flex h-[40px] flex-1 items-center justify-center rounded-full border border-[#6f6523] bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[40px] lg:w-[120px] lg:flex-none lg:rounded-[59px] lg:border-0 lg:bg-white lg:px-2 lg:py-2 lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
+						<a href="./cadastro.html" class="flex h-[40px] flex-1 items-center justify-center rounded-full border border-transparent bg-[#171715] text-[16px] font-light font-geist text-[#E7D158] transition-colors duration-200 hover:bg-[#1d1d1a] lg:h-[40px] lg:w-[120px] lg:flex-none lg:rounded-[59px] lg:border-0 lg:bg-white lg:px-2 lg:py-2 lg:text-[15px] lg:text-zinc-900 lg:hover:bg-white">
 							Cadastrar
 						</a>
 					</div>

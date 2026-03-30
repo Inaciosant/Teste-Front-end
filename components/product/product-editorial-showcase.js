@@ -80,8 +80,8 @@ class ProductEditorialShowcase extends HTMLElement {
           </div>
         </div>
 
-        <div class="w-full overflow-visible md:overflow-clip">
-          <div data-editorial-swiper class="swiper w-full !overflow-visible relative z-10">
+        <div class="w-full overflow-hidden">
+          <div data-editorial-swiper class="swiper w-full !overflow-hidden relative z-10">
             <div class="swiper-wrapper">
               ${this.renderCards()}
             </div>
@@ -97,9 +97,9 @@ class ProductEditorialShowcase extends HTMLElement {
         <div class="grid w-full grid-cols-1 lg:grid-cols-2 lg:grid-rows-[520px_520px] gap-y-8 lg:gap-y-0">
           
           <div class="flex flex-col w-full h-full relative z-20">
-            <div class="mb-4 flex items-center justify-between px-4 md:hidden relative z-30">
-              <h3 class="font-geist text-xl font-normal text-zinc-900">Óculos</h3>
-              <a href="#" class="inline-flex rounded-full border border-zinc-200 px-4 py-[5px] text-[11px] font-medium text-zinc-600">Veja mais!</a>
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3 px-4 md:hidden relative z-30">
+              <h3 class="font-geist text-lg font-normal leading-tight text-zinc-900 sm:text-xl">Óculos</h3>
+              <a href="#" class="inline-flex shrink-0 rounded-full border border-zinc-200 px-3 py-[5px] text-[11px] font-medium text-zinc-600">Veja mais!</a>
             </div>
             <article class="relative flex-1 min-h-[400px] lg:min-h-0 overflow-hidden lg:rounded-tr-[60px] w-full z-10">
               <img src="./assets/images/banners/68575d20045d21102c3dd58478aa6f81ae38c4f0.jpg" class="h-full w-full object-cover object-center" />
@@ -120,9 +120,9 @@ class ProductEditorialShowcase extends HTMLElement {
           </div>
 
           <div class="flex flex-col w-full h-full relative z-20">
-            <div class="mb-4 flex items-center justify-between px-4 md:hidden relative z-30">
-              <h3 class="font-geist text-xl font-normal text-zinc-900">Winter 24 Collection</h3>
-              <a href="#" class="inline-flex rounded-full border border-zinc-200 px-4 py-[5px] text-[11px] font-medium text-zinc-600">Veja mais!</a>
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3 px-4 md:hidden relative z-30">
+              <h3 class="min-w-0 max-w-[65%] font-geist text-base font-normal leading-tight text-zinc-900 sm:max-w-none sm:text-xl">Winter 24 Collection</h3>
+              <a href="#" class="inline-flex shrink-0 rounded-full border border-zinc-200 px-3 py-[5px] text-[11px] font-medium text-zinc-600">Veja mais!</a>
             </div>
             <article class="relative flex-1 min-h-[400px] lg:min-h-0 overflow-hidden lg:rounded-bl-[60px] w-full z-10">
               <img src="./assets/images/banners/2.jpg" class="h-full w-full object-cover object-top" />

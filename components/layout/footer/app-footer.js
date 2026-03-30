@@ -1,13 +1,18 @@
 class SiteFooter extends HTMLElement {
   constructor() {
     super();
-    this.mobileQuery = window.matchMedia("(max-width: 767px)");
+    this.mobileQuery = window.matchMedia("(max-width: 1023px)");
     this.handleBreakpointChange = this.handleBreakpointChange.bind(this);
   }
 
   connectedCallback() {
     this.render();
     this.setupAccordion();
+
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+
     this.mobileQuery.addEventListener("change", this.handleBreakpointChange);
   }
 
@@ -31,7 +36,7 @@ class SiteFooter extends HTMLElement {
     trigger.setAttribute("aria-expanded", String(!isOpen));
     panel.style.maxHeight = isOpen ? "0px" : `${panel.scrollHeight}px`;
     if (indicator) {
-      indicator.textContent = isOpen ? "▸" : "▾";
+      indicator.classList.toggle("rotate-180", !isOpen);
     }
   }
 
@@ -56,7 +61,7 @@ class SiteFooter extends HTMLElement {
 
       const indicator = trigger.querySelector("[data-footer-accordion-indicator]");
       if (indicator) {
-        indicator.textContent = isMobile ? "▸" : "";
+        indicator.classList.toggle("rotate-180", !isMobile);
       }
     });
 
@@ -92,8 +97,8 @@ class SiteFooter extends HTMLElement {
 
   render() {
     this.innerHTML = `
-    <footer class="bg-[#171716] text-white pt-16 px-8 md:px-20 font-geist font-normal text-[16px] leading-none">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-12 items-start pb-16">
+    <footer class="bg-[#171716] text-white pt-16 font-geist font-normal text-[16px] leading-none overflow-x-hidden">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 gap-12 px-4 pb-16 sm:px-6 lg:grid-cols-5 lg:px-20">
         
         <div class="flex flex-col gap-3">
           <a href="#" class="relative flex items-center justify-center bg-[#262624] hover:bg-[#333331] transition-colors rounded-full px-6 py-4 w-full align-middle">
@@ -116,16 +121,16 @@ class SiteFooter extends HTMLElement {
 
         <div>
           <h3
-            class="text-[#E7D158] font-regular mb-4 md:mb-8 tracking-wider flex items-center justify-between cursor-pointer md:cursor-default"
+            class="text-[#E7D158] font-regular mb-4 lg:mb-8 tracking-wider flex items-center justify-between cursor-pointer lg:cursor-default"
             data-footer-accordion-trigger
             role="button"
             tabindex="0"
             aria-expanded="true"
           >
             <span>Institucional</span>
-            <span class="md:hidden" data-footer-accordion-indicator>+</span>
+            <i data-lucide="chevron-down" class="lg:hidden h-4 w-4 transition-transform duration-200" data-footer-accordion-indicator></i>
           </h3>
-          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 md:overflow-visible">
+          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 lg:overflow-visible">
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Quem somos</a></li>
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Trocas e devoluções</a></li>
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Política de privacidade</a></li>
@@ -135,16 +140,16 @@ class SiteFooter extends HTMLElement {
 
         <div>
           <h3
-            class="text-[#E7D158] font-regular mb-4 md:mb-8 tracking-wider flex items-center justify-between cursor-pointer md:cursor-default"
+            class="text-[#E7D158] font-regular mb-4 lg:mb-8 tracking-wider flex items-center justify-between cursor-pointer lg:cursor-default"
             data-footer-accordion-trigger
             role="button"
             tabindex="0"
             aria-expanded="true"
           >
             <span>Minha conta</span>
-            <span class="md:hidden" data-footer-accordion-indicator>+</span>
+            <i data-lucide="chevron-down" class="lg:hidden h-4 w-4 transition-transform duration-200" data-footer-accordion-indicator></i>
           </h3>
-          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 md:overflow-visible">
+          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 lg:overflow-visible">
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Fale conosco</a></li>
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Meus dados</a></li>
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Meus pedidos</a></li>
@@ -154,16 +159,16 @@ class SiteFooter extends HTMLElement {
 
         <div>
           <h3
-            class="text-[#E7D158] font-regular mb-4 md:mb-8 tracking-wider flex items-center justify-between cursor-pointer md:cursor-default"
+            class="text-[#E7D158] font-regular mb-4 lg:mb-8 tracking-wider flex items-center justify-between cursor-pointer lg:cursor-default"
             data-footer-accordion-trigger
             role="button"
             tabindex="0"
             aria-expanded="true"
           >
             <span>Categorias</span>
-            <span class="md:hidden" data-footer-accordion-indicator>+</span>
+            <i data-lucide="chevron-down" class="lg:hidden h-4 w-4 transition-transform duration-200" data-footer-accordion-indicator></i>
           </h3>
-          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 md:overflow-visible">
+          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 lg:overflow-visible">
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Camisetas</a></li>
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Calças</a></li>
             <li><a href="#" class="hover:text-[#E7D158] transition-colors">Jaquetas</a></li>
@@ -175,16 +180,16 @@ class SiteFooter extends HTMLElement {
 
         <div>
           <h3
-            class="text-[#E7D158] font-regular mb-4 md:mb-3 tracking-wider flex items-center justify-between cursor-pointer md:cursor-default"
+            class="text-[#E7D158] font-regular mb-4 lg:mb-3 tracking-wider flex items-center justify-between cursor-pointer lg:cursor-default"
             data-footer-accordion-trigger
             role="button"
             tabindex="0"
             aria-expanded="true"
           >
             <span>Fale conosco</span>
-            <span class="md:hidden" data-footer-accordion-indicator>▸</span>
+            <i data-lucide="chevron-down" class="lg:hidden h-4 w-4 transition-transform duration-200" data-footer-accordion-indicator></i>
           </h3>
-          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 md:overflow-visible">
+          <ul class="flex flex-col gap-5 overflow-hidden transition-all duration-300 lg:overflow-visible">
             <li><p>Telefone: (16) 3799-9999</p></li>
             <li><p>WhatsApp: (16) 99999-9999</p></li>
             <li><p><a href="mailto:contato@lime.com.br" class="hover:text-[#E7D158] transition-colors">contato@lime.com.br</a></p></li>
@@ -201,7 +206,7 @@ class SiteFooter extends HTMLElement {
 
       </div>
 
-      <div class="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] bg-[#e9e9e9] text-[#1f1f1f] py-8 mt-2 px-8 md:px-20">
+      <div class="w-full bg-[#e9e9e9] text-[#1f1f1f] py-8 px-4 sm:px-6 md:px-20 overflow-x-hidden">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           <div class="flex min-w-0 flex-col gap-4">
             <h4 class="text-[20px] leading-none font-normal text-[#2b2b2b]">Formas de pagamento</h4>

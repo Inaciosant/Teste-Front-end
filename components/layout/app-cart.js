@@ -55,16 +55,16 @@ class AppCart extends HTMLElement {
         // Pequeno delay para a animação
         setTimeout(() => {
             this.cartOverlay.classList.remove("opacity-0");
-            this.cartPanel.classList.remove("translate-y-full", "lg:translate-x-full");
-            this.cartPanel.classList.add("translate-y-0", "lg:translate-x-0");
+            this.cartPanel.classList.remove("translate-x-full");
+            this.cartPanel.classList.add("translate-x-0");
         }, 10);
         document.body.style.overflow = "hidden";
     }
 
     closeCart() {
         this.cartOverlay.classList.add("opacity-0");
-        this.cartPanel.classList.remove("translate-y-0", "lg:translate-x-0");
-        this.cartPanel.classList.add("translate-y-full", "lg:translate-x-full");
+        this.cartPanel.classList.remove("translate-x-0");
+        this.cartPanel.classList.add("translate-x-full");
         
         setTimeout(() => {
             this.cartOverlay.classList.add("hidden");
@@ -122,7 +122,7 @@ class AppCart extends HTMLElement {
         this.innerHTML = `
             <div data-cart-overlay class="fixed inset-0 z-[150] hidden flex-col bg-[rgba(10,10,11,0.6)] p-3 backdrop-blur-sm transition-opacity duration-300 opacity-0 lg:p-4">
                 
-                <div data-cart-panel class="flex h-full w-full flex-col overflow-hidden rounded-[24px] bg-[#e6e6e6] px-4 py-4 shadow-2xl transition-transform duration-300 translate-y-full lg:translate-y-0 lg:translate-x-full lg:ml-auto lg:w-[420px]">
+                <div data-cart-panel class="flex h-full w-full flex-col overflow-hidden rounded-[24px] bg-[#e6e6e6] px-4 py-4 shadow-2xl transition-transform duration-300 translate-x-full lg:ml-auto lg:w-[420px]">
                     
                     <div class="flex items-center justify-between rounded-[16px] bg-white px-5 py-4 shadow-sm shrink-0">
                         <span class="text-[1.25rem] font-medium text-[#d8cc5b]">Meu carrinho</span>
