@@ -52,7 +52,6 @@ class AppCart extends HTMLElement {
     openCart() {
         this.cartOverlay.classList.remove("hidden");
         this.cartOverlay.classList.add("flex");
-        // Pequeno delay para a animação
         setTimeout(() => {
             this.cartOverlay.classList.remove("opacity-0");
             this.cartPanel.classList.remove("translate-x-full");
@@ -93,7 +92,6 @@ class AppCart extends HTMLElement {
                 </div>
             `;
         } else {
-            // HTML fiel ao print para cada produto
             this.itemsContainer.innerHTML = items.map(item => `
                 <div class="flex gap-3 items-start mb-5 last:mb-0 px-1">
                     <div class="w-[84px] h-[98px] shrink-0 bg-[#d9d9d9] rounded-lg overflow-hidden">
@@ -109,7 +107,10 @@ class AppCart extends HTMLElement {
                             </button>
                         </div>
                         <div class="mt-2 text-[13px] font-bold text-zinc-900">${Cart.formatPrice(item.price)}</div>
-                        <div class="mt-1 text-[12px] text-zinc-500 font-light">Tamanho: ${item.size}</div>
+                        <div class="mt-1 text-[12px] text-zinc-500 font-light flex items-center justify-between">
+                            <span>Tamanho: ${item.size}</span>
+                            ${item.quantity > 1 ? `<span class="bg-zinc-100 px-2 py-0.5 rounded-full text-[11px] font-medium text-zinc-600">Qtd: ${item.quantity}</span>` : ''}
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -141,7 +142,7 @@ class AppCart extends HTMLElement {
                         </div>
                         
                         <div class="flex flex-col gap-3">
-                            <a href="/checkout" class="flex h-[48px] w-full items-center justify-center rounded-full bg-[#E7D158] text-[14px] font-medium text-zinc-900 transition-colors hover:bg-[#d5c04b]">
+                            <a href="./checkout.html" class="flex h-[48px] w-full items-center justify-center rounded-full bg-[#E7D158] text-[14px] font-medium text-zinc-900 transition-colors hover:bg-[#d5c04b]">
                                 Finalizar compra
                             </a>
                             <button type="button" data-continue-shopping class="flex h-[48px] w-full items-center justify-center rounded-full border border-zinc-200 bg-white text-[14px] font-medium text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-zinc-800">

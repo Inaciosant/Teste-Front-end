@@ -343,49 +343,21 @@ class AppCategoryPage extends HTMLElement {
   }
 
   applyPriceRange(rangeKey) {
-    if (rangeKey === "0-100") {
-      this.minPrice = "0";
-      this.maxPrice = "100";
+    if (!rangeKey || rangeKey === "all") {
+      this.minPrice = "";
+      this.maxPrice = "";
       return;
     }
-
-    if (rangeKey === "100-200") {
-      this.minPrice = "100";
-      this.maxPrice = "200";
-      return;
-    }
-
-    if (rangeKey === "200-300") {
-      this.minPrice = "200";
-      this.maxPrice = "300";
-      return;
-    }
-
-    this.minPrice = "";
-    this.maxPrice = "";
+    const [min, max] = rangeKey.split("-");
+    this.minPrice = min || "";
+    this.maxPrice = max || "";
   }
 
   getPriceRangeKey() {
-    const min = Number(this.minPrice || "0");
-    const max = Number(this.maxPrice || "0");
-
     if (!this.minPrice && !this.maxPrice) {
       return "all";
     }
-
-    if (min === 0 && max === 100) {
-      return "0-100";
-    }
-
-    if (min === 100 && max === 200) {
-      return "100-200";
-    }
-
-    if (min === 200 && max === 300) {
-      return "200-300";
-    }
-
-    return "all";
+    return `${this.minPrice || 0}-${this.maxPrice || this.priceBounds.max}`;
   }
 
   formatNumber(value) {

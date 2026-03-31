@@ -68,11 +68,6 @@ class AppProductDetailPage extends HTMLElement {
         id: "sedex-2",
         title: "SEDEX - até 2 dias úteis - R$ 9,29",
         subtitle: "Para todo Brasil com transporte Aéreo."
-      },
-      {
-        id: "sedex-3",
-        title: "SEDEX - até 2 dias úteis - R$ 9,29",
-        subtitle: "Para todo Brasil com transporte Aéreo."
       }
     ];
   }
@@ -526,23 +521,22 @@ class AppProductDetailPage extends HTMLElement {
                 </div>
 
                 <div data-freight-inline-panel class="overflow-hidden transition-all duration-500 ease-out max-h-0 opacity-0 mt-0 pointer-events-none">
-                  <div class="mb-2 mt-1 flex items-center justify-between">
-                    <div class="flex min-w-0 items-center gap-2">
-                      ${
-                        primaryFreightOption
-                          ? `
-                            <p class="max-w-[165px] truncate font-geist text-[0.92rem] text-zinc-700 sm:max-w-[190px]">
-                              ${primaryFreightOption.title}
-                            </p>
-                          `
-                          : ""
-                      }
-                      <button type="button" data-action="toggle-freight-inline" class="inline-flex items-center gap-1 font-geist text-[0.82rem] text-zinc-600">
-                        <i data-lucide="x" class="h-3.5 w-3.5"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="rounded-[12px]  px-3 py-1.5">
+                  <div class="mt-4">
+                    ${
+                      primaryFreightOption
+                        ? `
+                          <article class="flex w-full items-start justify-between border-b border-[#e3e2dd] pb-3 pt-2">
+                            <div>
+                              <p class="font-geist text-[0.92rem] text-zinc-700">${primaryFreightOption.title}</p>
+                              <p class="mt-1 font-geist text-[0.86rem] text-zinc-500">${primaryFreightOption.subtitle}</p>
+                            </div>
+                            <button type="button" data-action="toggle-freight-inline" class="inline-flex items-center text-zinc-400 hover:text-zinc-600 ml-2 mt-0.5" stroke-width="1">
+                              <i data-lucide="x" class="h-5 w-5" stroke-width="1.2"></i>
+                            </button>
+                          </article>
+                        `
+                        : ""
+                    }
                     ${this.renderFreightInlineOptions()}
                   </div>
                 </div>

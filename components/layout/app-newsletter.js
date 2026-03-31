@@ -34,10 +34,10 @@ class AppNewsletter extends HTMLElement {
                 <div class="flex flex-col xl:flex-row items-center justify-between w-full bg-[#E7D158] rounded-[24px] xl:rounded-full px-4 sm:px-6 py-6 xl:px-8 xl:py-3 gap-6 xl:gap-4 overflow-hidden">
                     
                     <div class="flex w-full min-w-0 flex-col xl:flex-row items-center gap-2 xl:gap-10 text-center xl:text-left">
-                        <h2 class="text-[18px] xl:text-[20px] font-medium text-zinc-900 whitespace-normal leading-tight">
+                        <h2 class="text-[18px] xl:text-[20px] font-normal text-zinc-900 whitespace-normal leading-tight">
                             Receba nossas ofertas
                         </h2>
-                        <p class="text-[13px] xl:text-[14px] text-zinc-800 whitespace-normal break-words leading-relaxed max-w-[34ch]">
+                        <p class="text-[13px] xl:text-[14px] text-zinc-800 whitespace-normal xl:whitespace-nowrap break-words leading-relaxed max-w-[34ch] xl:max-w-none">
                             Se cadastre na newsletter e fique por dentro das novidades
                         </p>
                     </div>

@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | Lime</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body class="min-h-screen overflow-x-hidden grid grid-cols-12 bg-[#f9f9f9]">
+    <app-cart></app-cart>
+    <app-mobile-menu></app-mobile-menu>
+
+    <div class="navbar fixed top-0 left-0 w-full max-w-full z-[60] pt-6">
+      <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-20 xl:px-24">
+        <app-topbar></app-topbar>
+        <app-header></app-header>
+      </div>
+    </div>
+
+    <main class="col-span-12 pt-[175px] md:pt-[190px]">
+      <app-checkout-page></app-checkout-page>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="./js/cart.js"></script>
+    <script src="./js/index.js"></script>
+
+    <script src="./components/layout/app-topbar.js"></script>
+    <script src="./components/layout/app-header.js"></script>
+    <script src="./components/layout/app-cart.js"></script>
+    <script src="./components/layout/app-mobile-menu.js"></script>
+    
+    <script src="./components/checkout/app-checkout-page.js"></script>
+  </body>
+</html>
