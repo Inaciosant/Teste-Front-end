@@ -1,0 +1,555 @@
+class AppBuyTogether extends HTMLElement {
+  constructor() {
+    super();
+
+    this.items = this.getItems();
+    this.selectedIds = new Set([this.items[0].id]);
+    this.selectedSizes = Object.fromEntries(this.items.map((item) => [item.id, item.sizes[0]]));
+    this.mobileTrack = null;
+    this.openOptionsId = null;
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMobileTrackScroll = this.handleMobileTrackScroll.bind(this);
+  }
+
+  connectedCallback() {
+    this.render();
+    this.addEventListener("click", this.handleClick);
+    this.addEventListener("change", this.handleChange);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("click", this.handleClick);
+    this.removeEventListener("change", this.handleChange);
+
+    if (this.mobileTrack) {
+      this.mobileTrack.removeEventListener("scroll", this.handleMobileTrackScroll);
+    }
+  }
+
+  getItems() {
+    return [
+      {
+        id: 101,
+        title: "Blusa de moletom oversized com mangas bufantes",
+        oldPrice: 199.9,
+        price: 159.92,
+        installments: "10x de R$ 15,99 sem juros",
+        image: "./assets/images/products/Product1.jpg",
+        sizes: ["PP", "P", "M", "G"]
+      },
+      {
+        id: 102,
+        title: "Blusa de moletom oversized com mangas bufantes",
+        oldPrice: 199.9,
+        price: 159.92,
+        installments: "10x de R$ 15,99 sem juros",
+        image: "./assets/images/products/Product1.jpg",
+        sizes: ["PP", "P", "M", "G"]
+      },
+      {
+        id: 103,
+        title: "Blusa de moletom oversized com mangas bufantes",
+        oldPrice: 199.9,
+        price: 159.92,
+        installments: "10x de R$ 15,99 sem juros",
+        image: "./assets/images/products/Product1.jpg",
+        sizes: ["PP", "P", "M", "G"]
+      },
+      {
+        id: 104,
+        title: "Blusa de moletom oversized com mangas bufantes",
+        oldPrice: 199.9,
+        price: 159.92,
+        installments: "10x de R$ 15,99 sem juros",
+        image: "./assets/images/products/Product1.jpg",
+        sizes: ["PP", "P", "M", "G"]
+      }
+    ];
+  }
+
+  formatPrice(value) {
+    return Number(value || 0).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
+  refreshIcons() {
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+  }
+
+  addSelectedToCart() {
+    if (!window.Cart || typeof window.Cart.add !== "function") {
+      return;
+    }
+
+    const selected = this.items.filter((item) => this.selectedIds.has(item.id));
+
+    if (!selected.length) {
+      const feedback = this.querySelector("[data-buy-feedback]");
+      if (feedback) {
+        feedback.textContent = "Selecione pelo menos um produto para continuar.";
+      }
+      return;
+    }
+
+    selected.forEach((item) => {
+      window.Cart.add({
+        id: `combo-${item.id}`,
+        name: item.title,
+        price: item.price,
+        size: this.selectedSizes[item.id] || item.sizes[0],
+        image: item.image,
+        quantity: 1
+      });
+    });
+
+    const feedback = this.querySelector("[data-buy-feedback]");
+    if (feedback) {
+      feedback.textContent = "Produtos adicionados ao carrinho.";
+    }
+  }
+
+  handleChange(event) {
+    const select = event.target;
+
+    if (!select.matches("[data-action='size-select']")) {
+      return;
+    }
+
+    const itemId = Number(select.dataset.id || "0");
+    this.selectedSizes[itemId] = select.value;
+  }
+
+  handleClick(event) {
+    const actionTarget = event.target.closest("[data-action]");
+
+    if (!actionTarget) {
+      return;
+    }
+
+    const action = actionTarget.dataset.action;
+
+    if (action === "toggle-combo-item") {
+      const itemId = Number(actionTarget.dataset.id || "0");
+      if (this.selectedIds.has(itemId)) {
+        this.selectedIds.delete(itemId);
+      } else {
+        this.selectedIds.add(itemId);
+      }
+      this.render();
+      return;
+    }
+
+    if (action === "combo-prev" || action === "combo-next") {
+      const track = this.querySelector("[data-combo-track]");
+      if (!track) {
+        return;
+      }
+
+      const delta = action === "combo-next" ? 320 : -320;
+      track.scrollBy({ left: delta, behavior: "smooth" });
+      return;
+    }
+
+    if (action === "open-combo-options" || action === "open-mobile-options") {
+      const itemId = Number(actionTarget.dataset.id || "0");
+      this.openOptionsId = itemId;
+      this.render();
+      return;
+    }
+
+    if (action === "close-combo-options" || action === "close-mobile-options") {
+      this.openOptionsId = null;
+      this.render();
+      return;
+    }
+
+    if (action === "add-selected-combo") {
+      this.addSelectedToCart();
+    }
+  }
+
+  setupMobileTrack() {
+    if (this.mobileTrack) {
+      this.mobileTrack.removeEventListener("scroll", this.handleMobileTrackScroll);
+    }
+
+    this.mobileTrack = this.querySelector("[data-combo-mobile-track]");
+
+    if (!this.mobileTrack) {
+      return;
+    }
+
+    this.mobileTrack.addEventListener("scroll", this.handleMobileTrackScroll, { passive: true });
+    this.updateMobileProgress();
+  }
+
+  handleMobileTrackScroll() {
+    this.updateMobileProgress();
+  }
+
+  updateMobileProgress() {
+    const track = this.mobileTrack || this.querySelector("[data-combo-mobile-track]");
+    const progress = this.querySelector("[data-combo-mobile-progress]");
+
+    if (!track || !progress) {
+      return;
+    }
+
+    const totalScrollable = track.scrollWidth - track.clientWidth;
+
+    if (totalScrollable <= 0) {
+      progress.style.width = "100%";
+      progress.style.transform = "translateX(0)";
+      return;
+    }
+
+    const thumbPercent = Math.max(24, (track.clientWidth / track.scrollWidth) * 100);
+    const travelPercent = Math.max(0, 100 - thumbPercent);
+    const ratio = track.scrollLeft / totalScrollable;
+
+    progress.style.width = `${thumbPercent}%`;
+    progress.style.transform = `translateX(${travelPercent * ratio}%)`;
+  }
+
+  renderDesktopCards() {
+    const firstSelected = this.items.find((item) => this.selectedIds.has(item.id));
+    const leadId = firstSelected?.id;
+    const configurableId = this.items.find((item) => item.id !== leadId)?.id || null;
+
+    return this.items
+      .map((item, index) => {
+        const isSelected = this.selectedIds.has(item.id);
+        const isConfigurable = item.id === configurableId;
+        const isOptionsOpen = isConfigurable && this.openOptionsId === item.id;
+
+        return `
+          <article class="w-[248px] shrink-0 rounded-[20px] bg-[#ecebe6] p-3 lg:w-[286px]">
+            <div class="relative overflow-hidden rounded-[18px] bg-[#d9dbd8]">
+              <button
+                type="button"
+                data-action="toggle-combo-item"
+                data-id="${item.id}"
+                class="absolute left-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
+                  isSelected
+                    ? "border-transparent bg-white text-zinc-700"
+                    : "border-[#d9d7cf] bg-white/80 text-transparent"
+                }"
+              >
+                <i data-lucide="check" class="h-3.5 w-3.5"></i>
+              </button>
+              <img src="${item.image}" alt="${item.title}" class="h-[250px] w-full object-cover object-top md:h-[280px] lg:h-[316px]" />
+
+              ${
+                index > 0
+                  ? `
+                    <div class="absolute bottom-2 left-2 right-2">
+                      ${
+                        isConfigurable
+                          ? `
+                            <div class="relative">
+                              <button
+                                type="button"
+                                data-action="${isOptionsOpen ? "close-combo-options" : "open-combo-options"}"
+                                data-id="${item.id}"
+                                class="inline-flex h-[36px] w-full items-center justify-between rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600"
+                              >
+                                Escolher opções
+                                <i data-lucide="chevron-down" class="h-4 w-4 text-zinc-500 transition-transform ${isOptionsOpen ? "rotate-180" : ""}"></i>
+                              </button>
+
+                              <div class="pointer-events-none absolute bottom-full left-0 right-0 z-20 mb-2 origin-bottom transform-gpu transition-all duration-300 ease-out ${
+                                isOptionsOpen ? "translate-y-0 scale-y-100 opacity-100" : "translate-y-2 scale-y-95 opacity-0"
+                              }">
+                                <div class="pointer-events-auto rounded-[22px] border-[6px] border-[#bcc0bf] bg-[#f1f1ef] p-3 shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
+                                  <div class="mb-2 flex items-center justify-between">
+                                    <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
+                                    <button type="button" data-action="close-combo-options" class="inline-flex h-6 w-6 items-center justify-center text-zinc-500">
+                                      <i data-lucide="x" class="h-4 w-4"></i>
+                                    </button>
+                                  </div>
+
+                                  <div class="space-y-2">
+                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                                      Cores disponíveis
+                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                                    </button>
+
+                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                                      Escolha seu CHARMS
+                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                                    </button>
+
+                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                                      Iniciais
+                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                                    </button>
+
+                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-500">
+                                      Inserir imagem para personalizar
+                                      <i data-lucide="image-plus" class="h-4 w-4"></i>
+                                    </button>
+
+                                    <input
+                                      type="text"
+                                      placeholder="Digite aqui o que iremos gravar"
+                                      class="h-[32px] w-full rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-600 outline-none placeholder:text-zinc-500"
+                                    />
+
+                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                                      Modelo da imagem
+                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          `
+                          : `
+                            <select
+                              data-action="size-select"
+                              data-id="${item.id}"
+                              class="h-[36px] w-full appearance-none rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 pr-8 font-geist text-[0.82rem] text-zinc-600"
+                            >
+                              ${item.sizes
+                                .map(
+                                  (size) =>
+                                    `<option value="${size}" ${
+                                      this.selectedSizes[item.id] === size ? "selected" : ""
+                                    }>${size}</option>`
+                                )
+                                .join("")}
+                            </select>
+                          `
+                      }
+                    </div>
+                  `
+                  : ""
+              }
+            </div>
+
+            <h3 class="mt-3 font-geist text-[1rem] leading-snug text-zinc-600">${item.title}</h3>
+            <div class="mt-2.5 flex items-center gap-3">
+              <span class="font-geist text-[0.82rem] text-zinc-400 line-through">${this.formatPrice(
+                item.oldPrice
+              )}</span>
+              <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+            </div>
+            <p class="mt-1 font-geist text-[0.82rem] text-zinc-600">${item.installments}</p>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  renderMobileSummaryCard() {
+    const firstSelected = this.items.find((item) => this.selectedIds.has(item.id));
+    const item = firstSelected || this.items[0];
+    const isSelected = this.selectedIds.has(item.id);
+
+    return `
+      <article class="rounded-[16px] bg-[#ecebe6] p-2.5">
+        <div class="flex items-start gap-3">
+          <div class="relative h-[82px] w-[82px] shrink-0 overflow-hidden rounded-[10px] bg-[#d9dbd8]">
+            <button
+              type="button"
+              data-action="toggle-combo-item"
+              data-id="${item.id}"
+              class="absolute left-1.5 top-1.5 z-10 inline-flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${
+                isSelected
+                  ? "border-transparent bg-white text-zinc-700"
+                  : "border-[#d9d7cf] bg-white/80 text-transparent"
+              }"
+            >
+              <i data-lucide="check" class="h-3 w-3"></i>
+            </button>
+            <img src="${item.image}" alt="${item.title}" class="h-full w-full object-cover object-top" />
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <h3 class="line-clamp-2 font-geist text-[0.78rem] leading-[1.35] text-zinc-600">${item.title}</h3>
+            <div class="mt-1.5 flex items-center gap-2">
+              <span class="font-geist text-[0.76rem] text-zinc-400 line-through">${this.formatPrice(
+                item.oldPrice
+              )}</span>
+              <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+            </div>
+            <p class="mt-0.5 font-geist text-[0.76rem] text-zinc-600">${item.installments}</p>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  renderMobileCarouselCards() {
+    const firstSelected = this.items.find((item) => this.selectedIds.has(item.id));
+    const leadId = firstSelected?.id;
+    const carouselItems = this.items.filter((item) => item.id !== leadId);
+    const itemsToRender = carouselItems.length ? carouselItems : this.items;
+    const configurableId = itemsToRender[0]?.id || null;
+
+    return itemsToRender
+      .map((item) => {
+        const isSelected = this.selectedIds.has(item.id);
+        const isConfigurable = item.id === configurableId;
+        const isOptionsOpen = isConfigurable && this.openOptionsId === item.id;
+
+        return `
+          <article class="w-[286px] max-w-[calc(100vw-48px)] shrink-0 snap-start rounded-[20px] bg-[#ecebe6] p-3">
+            <div class="relative overflow-hidden rounded-[18px] bg-[#d9dbd8]">
+              <button
+                type="button"
+                data-action="toggle-combo-item"
+                data-id="${item.id}"
+                class="absolute left-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
+                  isSelected
+                    ? "border-transparent bg-white text-zinc-700"
+                    : "border-[#d9d7cf] bg-white/80 text-transparent"
+                }"
+              >
+                <i data-lucide="check" class="h-3.5 w-3.5"></i>
+              </button>
+
+              <img src="${item.image}" alt="${item.title}" class="h-[250px] w-full object-cover object-top" />
+
+            </div>
+
+            ${
+              isConfigurable
+                ? `
+                  <div class="relative mt-2">
+                    <div class="overflow-hidden transition-all duration-300 ease-out ${
+                      isOptionsOpen ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+                    }">
+                      <div class="h-[286px] w-full rounded-t-[16px] rounded-b-none border border-[#dedcd3] border-b-0 bg-[#f1f1ef] pt-2 pr-4 pb-4 pl-4 shadow-[0_14px_30px_rgba(0,0,0,0.18)]">
+                        <div class="mb-2 flex items-center justify-between">
+                          <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
+                          <button type="button" data-action="close-combo-options" class="inline-flex h-6 w-6 items-center justify-center text-zinc-500">
+                            <i data-lucide="x" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+
+                        <div class="space-y-2">
+                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                            Cores disponíveis
+                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                          </button>
+
+                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                            Escolha seu CHARMS
+                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                          </button>
+
+                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                            Iniciais
+                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                          </button>
+
+                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-500">
+                            Inserir imagem para personalizar
+                            <i data-lucide="image-plus" class="h-4 w-4"></i>
+                          </button>
+
+                          <input
+                            type="text"
+                            placeholder="Digite aqui o que iremos gravar"
+                            class="h-[32px] w-full rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-600 outline-none placeholder:text-zinc-500"
+                          />
+
+                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                            Modelo da imagem
+                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      data-action="${isOptionsOpen ? "close-combo-options" : "open-combo-options"}"
+                      data-id="${item.id}"
+                      class="inline-flex h-[34px] w-full items-center justify-between border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600 transition-[border-radius] duration-300 ${
+                        isOptionsOpen ? "rounded-b-[16px] rounded-t-none border-t-0" : "rounded-full"
+                      }"
+                    >
+                      Escolher opções
+                      <i data-lucide="chevron-down" class="h-4 w-4 text-zinc-500 transition-transform ${isOptionsOpen ? "rotate-180" : ""}"></i>
+                    </button>
+                  </div>
+                `
+                : ""
+            }
+
+            <h3 class="mt-3 font-geist text-[0.95rem] leading-snug text-zinc-600">${item.title}</h3>
+            <div class="mt-2.5 flex items-center gap-2">
+              <span class="font-geist text-[0.82rem] text-zinc-400 line-through">${this.formatPrice(
+                item.oldPrice
+              )}</span>
+              <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+            </div>
+            <p class="mt-1 font-geist text-[0.82rem] text-zinc-600">${item.installments}</p>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  render() {
+    this.innerHTML = `
+      <section class="w-full bg-[#f3f3f3] pb-12">
+        <div class="mx-auto w-full max-w-[1400px] px-6 lg:px-20 xl:px-24">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <h2 class="font-geist text-[2rem] text-zinc-900">Compre junto</h2>
+            <div class="hidden items-center gap-2 lg:flex">
+              <button type="button" data-action="combo-prev" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d7d5cc] text-zinc-600 transition-colors hover:bg-white">
+                <i data-lucide="chevron-left" class="h-4 w-4"></i>
+              </button>
+              <button type="button" data-action="combo-next" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d7d5cc] text-zinc-600 transition-colors hover:bg-white">
+                <i data-lucide="chevron-right" class="h-4 w-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-3 lg:hidden">
+            ${this.renderMobileSummaryCard()}
+
+            <div data-combo-mobile-track class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 hide-scrollbar">
+              ${this.renderMobileCarouselCards()}
+            </div>
+
+            <div class="relative mx-auto h-[3px] w-[56px] overflow-hidden rounded-full bg-[#dddcd4]">
+              <div data-combo-mobile-progress class="absolute left-0 top-0 h-full rounded-full bg-[#E7D158] transition-transform duration-200"></div>
+            </div>
+          </div>
+
+          <div data-combo-track class="hidden gap-4 overflow-x-auto pb-2 hide-scrollbar lg:flex lg:gap-4">
+            ${this.renderDesktopCards()}
+          </div>
+
+          <div class="mt-5 rounded-[16px] bg-[#ecebe6] p-4 lg:flex lg:items-center lg:justify-between lg:px-6">
+            <p data-buy-feedback class="font-geist text-[0.95rem] text-zinc-500 lg:text-center">
+              Selecione o produto desejado acima para adicionar à sua compra
+            </p>
+            <button
+              type="button"
+              data-action="add-selected-combo"
+              class="mt-3 inline-flex h-[44px] min-w-[220px] items-center justify-center rounded-full bg-[#E7D158] px-8 font-geist text-[0.95rem] text-zinc-900 transition-colors hover:bg-[#dcca52] lg:mt-0"
+            >
+              Adicionar ao carrinho
+            </button>
+          </div>
+        </div>
+      </section>
+    `;
+
+    this.refreshIcons();
+    this.setupMobileTrack();
+  }
+}
+
+customElements.define("app-buy-together", AppBuyTogether);

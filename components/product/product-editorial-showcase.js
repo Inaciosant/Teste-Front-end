@@ -1,7 +1,8 @@
 class ProductEditorialShowcase extends HTMLElement {
   constructor() {
     super();
-    this.products = Array.from({ length: 6 }, () => ({
+    this.products = Array.from({ length: 6 }, (_, index) => ({
+      id: index + 1,
       title: "Blusa de moletom oversized com mangas bufantes",
       image: "./assets/images/products/Product1.jpg",
       price: "159,92",
@@ -48,6 +49,7 @@ class ProductEditorialShowcase extends HTMLElement {
     return this.products.map(product => `
       <div data-editorial-item class="swiper-slide !h-auto !w-[240px] md:!w-[280px] pb-5 pt-2">
         <product-card
+          href="./produto.html?id=${product.id}"
           title="${product.title}"
           image="${product.image}"
           price="${product.price}"

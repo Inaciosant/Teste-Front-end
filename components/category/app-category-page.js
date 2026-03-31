@@ -682,6 +682,7 @@ class AppCategoryPage extends HTMLElement {
         (product) => `
           <product-card
             compact-mobile
+            href="./produto.html?id=${product.id}"
             title="${product.title}"
             image="${product.image}"
             price="${this.formatNumber(product.price)}"

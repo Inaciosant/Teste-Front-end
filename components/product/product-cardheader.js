@@ -3,6 +3,7 @@ class ProductCardHeader extends HTMLElement {
 		super();
 		this.products = [
 			{
+				id: 1,
 				title: "Blusa de moletom oversized com<br />mangas bufantes",
 				image: "./assets/images/products/Product1.jpg",
 				price: "159,92",
@@ -11,6 +12,7 @@ class ProductCardHeader extends HTMLElement {
 				discount: "20% off"
 			},
 			{
+				id: 2,
 				title: "Blusa de moletom com modelagem<br />curta e estampa",
 				image: "./assets/images/products/Product2.jpg",
 				price: "139,90",
@@ -95,33 +97,35 @@ class ProductCardHeader extends HTMLElement {
 	renderMobileCards() {
 		return this.products
 			.map((product) => `
-					<article class="swiper-slide product-card-mobile shrink-0 flex h-[454px] w-[302px] max-w-full flex-col rounded-[24px] bg-[#111111] p-4 shadow-2xl">
-					<div class="relative h-[250px] md:h-[280px] w-full shrink-0 overflow-hidden rounded-[20px] bg-zinc-200">
-						<img
-							src="${product.image}"
-							class="h-full w-full object-cover object-top"
-							alt="Blusa de moletom"
-						/>
-						<div class="absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-900">
-							${product.discount}
-						</div>
+					<div class="swiper-slide product-card-mobile shrink-0 w-[302px] max-w-full">
+						<a href="./produto.html?id=${product.id}" class="flex h-[454px] w-full flex-col rounded-[24px] bg-[#111111] p-4 shadow-2xl no-underline">
+							<div class="relative h-[250px] md:h-[280px] w-full shrink-0 overflow-hidden rounded-[20px] bg-zinc-200">
+								<img
+									src="${product.image}"
+									class="h-full w-full object-cover object-top"
+									alt="Blusa de moletom"
+								/>
+								<div class="absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-900">
+									${product.discount}
+								</div>
+							</div>
+
+							<div class="flex flex-1 flex-col pt-4">
+								<h3 class="mb-4 min-h-[48px] text-[13px] leading-[1.55] text-zinc-400">
+									${product.title}
+								</h3>
+
+								<div class="mb-2.5 mt-auto flex items-center gap-3">
+									<span class="text-[13px] text-zinc-600 line-through">${product.oldPrice}</span>
+									<span class="text-[1rem] text-[#E7D158]">${product.price}</span>
+								</div>
+
+								<p class="text-[12px] text-zinc-500">
+									${product.installments}
+								</p>
+							</div>
+						</a>
 					</div>
-
-					<div class="flex flex-1 flex-col pt-4">
-						<h3 class="mb-4 min-h-[48px] text-[13px] leading-[1.55] text-zinc-400">
-							${product.title}
-						</h3>
-
-						<div class="mb-2.5 mt-auto flex items-center gap-3">
-							<span class="text-[13px] text-zinc-600 line-through">${product.oldPrice}</span>
-							<span class="text-[1rem] text-[#E7D158]">${product.price}</span>
-						</div>
-
-						<p class="text-[12px] text-zinc-500">
-							${product.installments}
-						</p>
-					</div>
-				</article>
 			`)
 			.join("");
 	}
@@ -130,7 +134,7 @@ class ProductCardHeader extends HTMLElement {
 		return this.products
 			.map((product) => `
 				<div class="swiper-slide">
-					<div class="relative flex h-[454px] w-[302px] flex-col overflow-visible rounded-[30px] bg-[#121212] shadow-2xl">
+					<a href="./produto.html?id=${product.id}" class="relative flex h-[454px] w-[302px] flex-col overflow-visible rounded-[30px] bg-[#121212] shadow-2xl no-underline">
 						<div class="relative h-[250px] md:h-[280px] w-full shrink-0 bg-zinc-200">
 							<img
 								src="${product.image}"
@@ -157,7 +161,7 @@ class ProductCardHeader extends HTMLElement {
 								${product.installments}
 							</p>
 						</div>
-					</div>
+					</a>
 				</div>
 			`)
 			.join("");

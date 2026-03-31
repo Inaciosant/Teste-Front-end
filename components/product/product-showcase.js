@@ -3,6 +3,7 @@ class ProductShowcase extends HTMLElement {
     super();
     this.products = [
       {
+        id: 1,
         title: "Blusa de moletom oversized com mangas bufantes",
         image: "./assets/images/products/Product1.jpg",
         price: "159,92",
@@ -11,6 +12,7 @@ class ProductShowcase extends HTMLElement {
         badge: "20% off"
       },
       {
+        id: 1,
         title: "Blusa de moletom oversized com mangas bufantes",
         image: "./assets/images/products/Product1.jpg",
         price: "159,92",
@@ -19,6 +21,7 @@ class ProductShowcase extends HTMLElement {
         badge: "20% off"
       },
       {
+        id: 1,
         title: "Blusa de moletom oversized com mangas bufantes",
         image: "./assets/images/products/Product1.jpg",
         price: "159,92",
@@ -27,6 +30,7 @@ class ProductShowcase extends HTMLElement {
         badge: "20% off"
       },
       {
+        id: 1,
         title: "Blusa de moletom oversized com mangas bufantes",
         image: "./assets/images/products/Product1.jpg",
         price: "159,92",
@@ -79,6 +83,7 @@ class ProductShowcase extends HTMLElement {
         (product) => `
           <div data-showcase-item class="swiper-slide showcase-card-item min-w-0 shrink-0">
             <product-card
+              href="./produto.html?id=${product.id}"
               title="${product.title}"
               image="${product.image}"
               price="${product.price}"

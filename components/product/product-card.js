@@ -6,7 +6,7 @@ class ProductCard extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["title", "image", "price", "old-price", "installments", "badge", "compact-mobile"];
+    return ["title", "image", "price", "old-price", "installments", "badge", "compact-mobile", "href"];
   }
 
   connectedCallback() {
@@ -58,6 +58,7 @@ class ProductCard extends HTMLElement {
     const installments = this.getAttribute("installments") || "";
     const badge = this.getAttribute("badge") || "";
     const compactMobile = this.hasAttribute("compact-mobile");
+    const href = this.getAttribute("href") || "";
 
     const articleClass = compactMobile
       ? "flex h-full max-[1023px]:h-[285px] flex-col overflow-hidden rounded-[24px] max-[1023px]:rounded-[8px] bg-[#f1f0eb] font-geist transition-shadow hover:shadow-md"
@@ -87,7 +88,7 @@ class ProductCard extends HTMLElement {
       ? "text-[12px] max-[1023px]:text-[11px] text-zinc-600"
       : "text-[12px] text-zinc-600";
 
-    this.innerHTML = `
+    const cardMarkup = `
       <article class="${articleClass}">
         <div class="${imageWrapClass}">
           <img
@@ -118,6 +119,17 @@ class ProductCard extends HTMLElement {
         </div>
       </article>
     `;
+
+    if (href) {
+      this.innerHTML = `
+        <a href="${href}" class="block h-full w-full no-underline">
+          ${cardMarkup}
+        </a>
+      `;
+      return;
+    }
+
+    this.innerHTML = cardMarkup;
   }
 }
 
