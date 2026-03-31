@@ -90,6 +90,10 @@ class AppProductDetailPage extends HTMLElement {
     });
   }
 
+  formatInstallments(installmentsText) {
+    return String(installmentsText || "");
+  }
+
   maskCep(value) {
     const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
 
@@ -317,13 +321,13 @@ class AppProductDetailPage extends HTMLElement {
   }
 
   renderFreightInlineOptions() {
-    if (!this.baseFreightOptions.length) {
-      return `
-        <p class="font-geist text-[0.9rem] text-zinc-500">Nenhuma opção disponível no momento.</p>
-      `;
+    const secondaryOptions = this.baseFreightOptions.slice(1);
+
+    if (!secondaryOptions.length) {
+      return "";
     }
 
-    return this.baseFreightOptions
+    return secondaryOptions
       .map(
         (option) => `
           <article data-freight-inline-item class="border-b border-[#e3e2dd] py-3 transition-all duration-300 ease-out opacity-0 translate-y-3 last:border-b-0">
@@ -352,11 +356,12 @@ class AppProductDetailPage extends HTMLElement {
     const currentImage = this.getCurrentImage();
     const secondaryImage = this.getSecondaryImage();
     const descriptionPreview = this.product.description.slice(0, 210);
+    const primaryFreightOption = this.baseFreightOptions[0] || null;
 
     this.innerHTML = `
       <section class="w-full bg-[#f3f3f3] pb-10">
         <div class="mx-auto w-full max-w-[1400px] px-6 lg:px-20 xl:px-24">
-          <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-4">
             <div class="lg:col-span-8">
               <div class="lg:hidden">
                 <article class="relative h-[340px] overflow-hidden rounded-[26px] bg-[#d9dbd8] sm:h-[420px]">
@@ -414,27 +419,27 @@ class AppProductDetailPage extends HTMLElement {
 
             </div>
 
-            <aside class="lg:col-span-4 lg:flex lg:justify-end">
+            <aside class="lg:col-span-4 lg:flex lg:justify-start h-full">
               <article class="w-full rounded-[24px] bg-[#ebeae5] p-6 lg:min-h-[781px] lg:w-[362px] lg:max-w-none">
-              <div class="flex h-full flex-col gap-6">
+              <div class="flex h-full flex-col">
               <h1 class="font-geist text-[20px] leading-[27px] font-normal tracking-[0em] text-zinc-900">${this.product.title}</h1>
-              <p class="mt-2 font-geist text-[0.9rem] text-zinc-400">Ref.: ${this.product.ref}</p>
+              <p class=" font-geist text-[0.9rem] text-zinc-400">Ref.: ${this.product.ref}</p>
 
               <div class="mt-4 flex items-end gap-2">
-                <span class="font-geist text-[0.95rem] text-zinc-400 line-through">${this.formatPrice(
+                <span class="align-middle font-geist text-[14px] leading-[27px] font-normal tracking-[0em] text-zinc-400 line-through">${this.formatPrice(
                   this.product.oldPrice
                 )}</span>
-                <span class="font-geist text-[1.7rem] text-zinc-900">${this.formatPrice(this.product.price)}</span>
+                <span class="align-middle font-geist text-[20px] leading-[27px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(this.product.price)}</span>
               </div>
-              <p class="mt-1 font-geist text-[0.95rem] text-zinc-700">${this.product.installments}</p>
+              <p class="mt-1 align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-700">${this.formatInstallments(this.product.installments)}</p>
 
-              <p class="mt-4 font-geist text-[0.95rem] text-zinc-500">
+              <p class="mt-5 font-geist text-[0.95rem] text-zinc-500">
                 Disponibilidade:
                 <span class="text-zinc-800">${this.product.availability}</span>
               </p>
 
               <div>
-                <p class="mb-2 font-geist text-[0.95rem] text-zinc-500">Tamanho</p>
+                <p class="mb-2 mt-5 font-geist text-[0.95rem] text-zinc-500">Tamanho</p>
                 <div class="flex flex-wrap gap-2">
                   ${this.product.sizes
                     .map(
@@ -445,7 +450,7 @@ class AppProductDetailPage extends HTMLElement {
                           data-value="${size}"
                           class="inline-flex h-[42px] min-w-[42px] items-center justify-center rounded-[10px] border px-4 font-geist text-[0.95rem] transition-colors ${
                             this.selectedSize === size
-                              ? "border-zinc-800 bg-white text-zinc-900"
+                              ? "border-zinc-800  text-zinc-900"
                               : "border-[#d8d3c0] bg-transparent text-zinc-500 hover:bg-white/70"
                           }"
                         >
@@ -481,21 +486,23 @@ class AppProductDetailPage extends HTMLElement {
                 </div>
               </div>
 
-              <button type="button" class="inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-full bg-[#e6e5de] font-geist text-[0.92rem] text-zinc-600">
-                <i data-lucide="ruler" class="h-3.5 w-3.5"></i>
-                Guia de medidas
-              </button>
+              <div class="mt-5 flex flex-col gap-3">
+                <button type="button" class="inline-flex h-[40px] w-full items-center justify-center gap-2 rounded-full bg-[#e6e5de] font-geist text-[0.92rem] text-zinc-600">
+                  <i data-lucide="ruler" class="h-3.5 w-3.5"></i>
+                  Guia de medidas
+                </button>
 
-              <button type="button" data-action="buy-product" class="inline-flex h-[54px] w-full items-center justify-center rounded-full bg-[#E7D158] font-geist text-[1.08rem] text-zinc-900 transition-colors hover:bg-[#dcca52]">
-                Comprar
-              </button>
+                <button type="button" data-action="buy-product" class="inline-flex h-[54px] w-full items-center justify-center rounded-full bg-[#E7D158] font-geist text-[1.08rem] text-zinc-900 transition-colors hover:bg-[#dcca52]">
+                  Comprar
+                </button>
 
-              <button type="button" data-action="buy-whatsapp" class="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-full border border-[#e0ded4] bg-white font-geist text-[0.96rem] text-zinc-800 transition-colors hover:bg-zinc-50">
-                <img src="./assets/icons/zap.svg" alt="" class="h-4 w-4" />
-                Comprar no WhatsApp
-              </button>
+                <button type="button" data-action="buy-whatsapp" class="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-full border border-[#e0ded4] bg-white font-geist text-[0.96rem] text-zinc-800 transition-colors hover:bg-zinc-50">
+                  <img src="./assets/icons/zap.svg" alt="" class="h-4 w-4" />
+                  Comprar no WhatsApp
+                </button>
+              </div>
 
-              <div class="border-t border-[#d8d3c7] pt-4">
+              <div class="mt-5 border-t border-[#d8d3c7] pt-4">
                 <div class="mb-2 flex items-center justify-between gap-3">
                   <span class="font-geist text-[0.88rem] text-zinc-500">Calcular prazos e preços</span>
                   <button type="button" class="inline-flex shrink-0 font-geist text-[0.84rem] text-zinc-600 underline underline-offset-2">Não sei meu CEP</button>
@@ -520,20 +527,29 @@ class AppProductDetailPage extends HTMLElement {
 
                 <div data-freight-inline-panel class="overflow-hidden transition-all duration-500 ease-out max-h-0 opacity-0 mt-0 pointer-events-none">
                   <div class="mb-2 mt-1 flex items-center justify-between">
-                    <p class="font-geist text-[0.82rem] text-zinc-500">Prévia de envio</p>
-                    <button type="button" data-action="toggle-freight-inline" class="inline-flex items-center gap-1 font-geist text-[0.82rem] text-zinc-600">
-                      Fechar
-                      <i data-lucide="chevron-up" class="h-3.5 w-3.5"></i>
-                    </button>
+                    <div class="flex min-w-0 items-center gap-2">
+                      ${
+                        primaryFreightOption
+                          ? `
+                            <p class="max-w-[165px] truncate font-geist text-[0.92rem] text-zinc-700 sm:max-w-[190px]">
+                              ${primaryFreightOption.title}
+                            </p>
+                          `
+                          : ""
+                      }
+                      <button type="button" data-action="toggle-freight-inline" class="inline-flex items-center gap-1 font-geist text-[0.82rem] text-zinc-600">
+                        <i data-lucide="x" class="h-3.5 w-3.5"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="rounded-[12px] bg-[#f7f7f4] px-3 py-1.5">
+                  <div class="rounded-[12px]  px-3 py-1.5">
                     ${this.renderFreightInlineOptions()}
                   </div>
                 </div>
               </div>
 
-              <div>
-                <p class="mb-2 font-geist text-[0.88rem] text-zinc-500">Compartilhar</p>
+              <div class="mt-auto pt-4">
+                <p class="mb-2 font-geist justify-end   text-[0.88rem] text-zinc-500">Compartilhar</p>
                 <div class="flex items-center gap-3 text-zinc-700">
                   <button type="button" class="inline-flex h-5 w-5 items-center justify-center"><img src="./assets/icons/shared/pinteres.svg" alt="Pinterest" class="h-4 w-4" /></button>
                   <button type="button" class="inline-flex h-5 w-5 items-center justify-center"><img src="./assets/icons/shared/face.svg" alt="Facebook" class="h-4 w-4" /></button>

@@ -454,14 +454,15 @@ class AppCategoryPage extends HTMLElement {
       blocks.forEach((block, index) => {
         if (animate) {
           block.style.transitionDelay = `${index * 70}ms`;
+          requestAnimationFrame(() => {
+            block.classList.remove("opacity-0", "translate-y-4");
+            block.classList.add("opacity-100", "translate-y-0");
+          });
         } else {
           block.style.transitionDelay = "0ms";
-        }
-
-        requestAnimationFrame(() => {
           block.classList.remove("opacity-0", "translate-y-4");
           block.classList.add("opacity-100", "translate-y-0");
-        });
+        }
       });
       this.updatePriceSliderUI();
       return;
@@ -533,7 +534,11 @@ class AppCategoryPage extends HTMLElement {
     ];
 
     return `
-      <section data-desktop-filters-panel class="hidden overflow-hidden transition-all duration-500 ease-out lg:block max-h-0 opacity-0 mb-0 pointer-events-none">
+      <section data-desktop-filters-panel class="hidden overflow-hidden transition-all duration-500 ease-out lg:block ${
+        this.desktopFiltersOpen
+          ? "max-h-[760px] opacity-100 mb-8 pointer-events-auto"
+          : "max-h-0 opacity-0 mb-0 pointer-events-none"
+      }">
         <div class="mb-5 flex items-center justify-between gap-4">
           <div class="flex flex-wrap items-center gap-3">
             <span class="font-geist text-[1.05rem] text-zinc-800">Filtrar por</span>
@@ -558,7 +563,9 @@ class AppCategoryPage extends HTMLElement {
         </div>
 
         <div class="grid grid-cols-3 gap-6">
-          <article data-filter-block class="rounded-[26px] bg-[#f1f1ee] p-5 transition-all duration-400 ease-out opacity-0 translate-y-4">
+          <article data-filter-block class="rounded-[26px] bg-[#f1f1ee] p-5 transition-all duration-400 ease-out ${
+            this.desktopFiltersOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }">
             <h3 class="mb-5 font-geist text-[1.08rem] font-normal text-zinc-900">Faixa de Preço</h3>
             <div class="mb-3 flex items-center justify-between font-geist text-[0.96rem] text-zinc-500">
               <span data-price-label-min>R$ ${this.formatNumber(this.getSliderMinValue())}</span>
@@ -612,7 +619,9 @@ class AppCategoryPage extends HTMLElement {
             </button>
           </article>
 
-          <article data-filter-block class="rounded-[26px] bg-[#f1f1ee] p-5 transition-all duration-400 ease-out opacity-0 translate-y-4">
+          <article data-filter-block class="rounded-[26px] bg-[#f1f1ee] p-5 transition-all duration-400 ease-out ${
+            this.desktopFiltersOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }">
             <h3 class="mb-5 font-geist text-[1.08rem] font-normal text-zinc-900">Tamanho</h3>
             <div class="flex flex-wrap gap-2">
               ${sizeOptions
@@ -626,7 +635,7 @@ class AppCategoryPage extends HTMLElement {
                       data-value="${option}"
                       class="inline-flex h-[40px] items-center justify-center rounded-[10px] border px-4 font-geist text-[0.95rem] transition-colors ${
                         isActive
-                          ? "border-zinc-800 bg-white text-zinc-900"
+                          ? "border-zinc-800 bg-transparent text-zinc-900"
                           : "border-[#d8d3c0] bg-transparent text-zinc-600 hover:bg-white/60"
                       }"
                     >
@@ -638,7 +647,9 @@ class AppCategoryPage extends HTMLElement {
             </div>
           </article>
 
-          <article data-filter-block class="rounded-[26px] bg-[#f1f1ee] p-5 transition-all duration-400 ease-out opacity-0 translate-y-4">
+          <article data-filter-block class="rounded-[26px] bg-[#f1f1ee] p-5 transition-all duration-400 ease-out ${
+            this.desktopFiltersOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }">
             <h3 class="mb-5 font-geist text-[1.08rem] font-normal text-zinc-900">Cor</h3>
             <div class="grid grid-cols-4 gap-2">
               ${colorOptions
@@ -652,7 +663,7 @@ class AppCategoryPage extends HTMLElement {
                       data-value="${option}"
                       class="inline-flex h-[40px] items-center justify-center rounded-[10px] border px-2 font-geist text-[0.92rem] transition-colors ${
                         isActive
-                          ? "border-zinc-800 bg-white text-zinc-900"
+                          ? "border-zinc-800 bg-transparent text-zinc-900"
                           : "border-[#d8d3c0] bg-transparent text-zinc-600 hover:bg-white/60"
                       }"
                     >

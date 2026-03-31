@@ -4,7 +4,9 @@ class AppBuyTogether extends HTMLElement {
 
     this.items = this.getItems();
     this.selectedIds = new Set([this.items[0].id]);
-    this.selectedSizes = Object.fromEntries(this.items.map((item) => [item.id, item.sizes[0]]));
+    this.selectedSizes = Object.fromEntries(
+      this.items.map((item) => [item.id, ""]),
+    );
     this.mobileTrack = null;
     this.openOptionsId = null;
 
@@ -24,7 +26,10 @@ class AppBuyTogether extends HTMLElement {
     this.removeEventListener("change", this.handleChange);
 
     if (this.mobileTrack) {
-      this.mobileTrack.removeEventListener("scroll", this.handleMobileTrackScroll);
+      this.mobileTrack.removeEventListener(
+        "scroll",
+        this.handleMobileTrackScroll,
+      );
     }
   }
 
@@ -37,7 +42,7 @@ class AppBuyTogether extends HTMLElement {
         price: 159.92,
         installments: "10x de R$ 15,99 sem juros",
         image: "./assets/images/products/Product1.jpg",
-        sizes: ["PP", "P", "M", "G"]
+        sizes: ["PP", "P", "M", "G"],
       },
       {
         id: 102,
@@ -46,7 +51,7 @@ class AppBuyTogether extends HTMLElement {
         price: 159.92,
         installments: "10x de R$ 15,99 sem juros",
         image: "./assets/images/products/Product1.jpg",
-        sizes: ["PP", "P", "M", "G"]
+        sizes: ["PP", "P", "M", "G"],
       },
       {
         id: 103,
@@ -55,7 +60,7 @@ class AppBuyTogether extends HTMLElement {
         price: 159.92,
         installments: "10x de R$ 15,99 sem juros",
         image: "./assets/images/products/Product1.jpg",
-        sizes: ["PP", "P", "M", "G"]
+        sizes: ["PP", "P", "M", "G"],
       },
       {
         id: 104,
@@ -64,15 +69,15 @@ class AppBuyTogether extends HTMLElement {
         price: 159.92,
         installments: "10x de R$ 15,99 sem juros",
         image: "./assets/images/products/Product1.jpg",
-        sizes: ["PP", "P", "M", "G"]
-      }
+        sizes: ["PP", "P", "M", "G"],
+      },
     ];
   }
 
   formatPrice(value) {
     return Number(value || 0).toLocaleString("pt-BR", {
       style: "currency",
-      currency: "BRL"
+      currency: "BRL",
     });
   }
 
@@ -92,7 +97,8 @@ class AppBuyTogether extends HTMLElement {
     if (!selected.length) {
       const feedback = this.querySelector("[data-buy-feedback]");
       if (feedback) {
-        feedback.textContent = "Selecione pelo menos um produto para continuar.";
+        feedback.textContent =
+          "Selecione pelo menos um produto para continuar.";
       }
       return;
     }
@@ -104,7 +110,7 @@ class AppBuyTogether extends HTMLElement {
         price: item.price,
         size: this.selectedSizes[item.id] || item.sizes[0],
         image: item.image,
-        quantity: 1
+        quantity: 1,
       });
     });
 
@@ -176,7 +182,10 @@ class AppBuyTogether extends HTMLElement {
 
   setupMobileTrack() {
     if (this.mobileTrack) {
-      this.mobileTrack.removeEventListener("scroll", this.handleMobileTrackScroll);
+      this.mobileTrack.removeEventListener(
+        "scroll",
+        this.handleMobileTrackScroll,
+      );
     }
 
     this.mobileTrack = this.querySelector("[data-combo-mobile-track]");
@@ -185,7 +194,9 @@ class AppBuyTogether extends HTMLElement {
       return;
     }
 
-    this.mobileTrack.addEventListener("scroll", this.handleMobileTrackScroll, { passive: true });
+    this.mobileTrack.addEventListener("scroll", this.handleMobileTrackScroll, {
+      passive: true,
+    });
     this.updateMobileProgress();
   }
 
@@ -194,7 +205,8 @@ class AppBuyTogether extends HTMLElement {
   }
 
   updateMobileProgress() {
-    const track = this.mobileTrack || this.querySelector("[data-combo-mobile-track]");
+    const track =
+      this.mobileTrack || this.querySelector("[data-combo-mobile-track]");
     const progress = this.querySelector("[data-combo-mobile-progress]");
 
     if (!track || !progress) {
@@ -209,7 +221,10 @@ class AppBuyTogether extends HTMLElement {
       return;
     }
 
-    const thumbPercent = Math.max(24, (track.clientWidth / track.scrollWidth) * 100);
+    const thumbPercent = Math.max(
+      24,
+      (track.clientWidth / track.scrollWidth) * 100,
+    );
     const travelPercent = Math.max(0, 100 - thumbPercent);
     const ratio = track.scrollLeft / totalScrollable;
 
@@ -218,9 +233,12 @@ class AppBuyTogether extends HTMLElement {
   }
 
   renderDesktopCards() {
-    const firstSelected = this.items.find((item) => this.selectedIds.has(item.id));
+    const firstSelected = this.items.find((item) =>
+      this.selectedIds.has(item.id),
+    );
     const leadId = firstSelected?.id;
-    const configurableId = this.items.find((item) => item.id !== leadId)?.id || null;
+    const configurableId =
+      this.items.find((item) => item.id !== leadId)?.id || null;
 
     return this.items
       .map((item, index) => {
@@ -229,8 +247,8 @@ class AppBuyTogether extends HTMLElement {
         const isOptionsOpen = isConfigurable && this.openOptionsId === item.id;
 
         return `
-          <article class="w-[248px] shrink-0 rounded-[20px] bg-[#ecebe6] p-3 lg:w-[286px]">
-            <div class="relative overflow-hidden rounded-[18px] bg-[#d9dbd8]">
+          <article class="h-[454px] w-[302px] shrink-0 overflow-hidden rounded-[24px] bg-[#ecebe6]">
+            <div class="relative overflow-hidden bg-[#d9dbd8]">
               <button
                 type="button"
                 data-action="toggle-combo-item"
@@ -252,63 +270,72 @@ class AppBuyTogether extends HTMLElement {
                       ${
                         isConfigurable
                           ? `
-                            <div class="relative">
-                              <button
-                                type="button"
-                                data-action="${isOptionsOpen ? "close-combo-options" : "open-combo-options"}"
-                                data-id="${item.id}"
-                                class="inline-flex h-[36px] w-full items-center justify-between rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600"
-                              >
-                                Escolher opções
-                                <i data-lucide="chevron-down" class="h-4 w-4 text-zinc-500 transition-transform ${isOptionsOpen ? "rotate-180" : ""}"></i>
-                              </button>
+                          <div class="relative h-[286px] w-[286px] md:h-[286px] lg:h-[300px]">
 
-                              <div class="pointer-events-none absolute bottom-full left-0 right-0 z-20 mb-2 origin-bottom transform-gpu transition-all duration-300 ease-out ${
-                                isOptionsOpen ? "translate-y-0 scale-y-100 opacity-100" : "translate-y-2 scale-y-95 opacity-0"
-                              }">
-                                <div class="pointer-events-auto rounded-[22px] border-[6px] border-[#bcc0bf] bg-[#f1f1ef] p-3 shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
-                                  <div class="mb-2 flex items-center justify-between">
-                                    <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
-                                    <button type="button" data-action="close-combo-options" class="inline-flex h-6 w-6 items-center justify-center text-zinc-500">
-                                      <i data-lucide="x" class="h-4 w-4"></i>
-                                    </button>
-                                  </div>
+  <button
+    type="button"
+    data-action="${isOptionsOpen ? "close-combo-options" : "open-combo-options"}"
+    data-id="${item.id}"
+    class="absolute bottom-0 left-0 right-0 z-20 inline-flex h-[36px] w-full items-center justify-between rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600 transition-all duration-300 ease-out ${
+      isOptionsOpen
+        ? "opacity-0 pointer-events-none scale-95"
+        : "opacity-100 scale-100"
+    }"
+  >
+    Escolher opções
+    <i data-lucide="chevron-down" class="h-4 w-4 text-zinc-500 transition-transform ${isOptionsOpen ? "rotate-180" : ""}"></i>
+  </button>
 
-                                  <div class="space-y-2">
-                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                                      Cores disponíveis
-                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                                    </button>
+  <div class="absolute inset-0 z-20 origin-bottom transform-gpu transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+    isOptionsOpen
+      ? "translate-y-0 scale-y-100 opacity-100 pointer-events-auto"
+      : "translate-y-full scale-y-95 opacity-0 pointer-events-none"
+  }">
+    <div class="h-full overflow-y-auto rounded-[18px] bg-[#f1f1ef] p-3 shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
+      
+      <div class="mb-2 flex items-center justify-between">
+        <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
+        <button type="button" data-action="close-combo-options" class="inline-flex h-6 w-6 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-200">
+          <i data-lucide="x" class="h-4 w-4"></i>
+        </button>
+      </div>
 
-                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                                      Escolha seu CHARMS
-                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                                    </button>
+      <div class="space-y-2">
+        <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+          Cores disponíveis
+          <i data-lucide="chevron-down" class="h-4 w-4"></i>
+        </button>
 
-                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                                      Iniciais
-                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                                    </button>
+        <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+          Escolha seu CHARMS
+          <i data-lucide="chevron-down" class="h-4 w-4"></i>
+        </button>
 
-                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-500">
-                                      Inserir imagem para personalizar
-                                      <i data-lucide="image-plus" class="h-4 w-4"></i>
-                                    </button>
+        <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+          Iniciais
+          <i data-lucide="chevron-down" class="h-4 w-4"></i>
+        </button>
 
-                                    <input
-                                      type="text"
-                                      placeholder="Digite aqui o que iremos gravar"
-                                      class="h-[32px] w-full rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-600 outline-none placeholder:text-zinc-500"
-                                    />
+        <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-500">
+          Inserir imagem para personalizar
+          <i data-lucide="image-plus" class="h-4 w-4"></i>
+        </button>
 
-                                    <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                                      Modelo da imagem
-                                      <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+        <input
+          type="text"
+          placeholder="Digite aqui o que iremos gravar"
+          class="h-[32px] w-full rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-600 outline-none placeholder:text-zinc-500"
+        />
+
+        <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+          Modelo da imagem
+          <i data-lucide="chevron-down" class="h-4 w-4"></i>
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
                           `
                           : `
                             <select
@@ -316,12 +343,19 @@ class AppBuyTogether extends HTMLElement {
                               data-id="${item.id}"
                               class="h-[36px] w-full appearance-none rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 pr-8 font-geist text-[0.82rem] text-zinc-600"
                             >
+                              <option value="" disabled ${
+                                this.selectedSizes[item.id] ? "" : "selected"
+                              }>
+                                Tamanho
+                              </option>
                               ${item.sizes
                                 .map(
                                   (size) =>
                                     `<option value="${size}" ${
-                                      this.selectedSizes[item.id] === size ? "selected" : ""
-                                    }>${size}</option>`
+                                      this.selectedSizes[item.id] === size
+                                        ? "selected"
+                                        : ""
+                                    }>${size}</option>`,
                                 )
                                 .join("")}
                             </select>
@@ -333,14 +367,16 @@ class AppBuyTogether extends HTMLElement {
               }
             </div>
 
-            <h3 class="mt-3 font-geist text-[1rem] leading-snug text-zinc-600">${item.title}</h3>
-            <div class="mt-2.5 flex items-center gap-3">
-              <span class="font-geist text-[0.82rem] text-zinc-400 line-through">${this.formatPrice(
-                item.oldPrice
-              )}</span>
-              <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+            <div class="px-5 pb-5 pt-5">
+              <h3 class="font-geist text-[1rem] leading-snug text-zinc-600">${item.title}</h3>
+              <div class="mt-2.5 flex items-center gap-3">
+                <span class="font-geist text-[0.82rem] text-zinc-400 line-through">${this.formatPrice(
+                  item.oldPrice,
+                )}</span>
+                <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+              </div>
+              <p class="mt-1 font-geist text-[0.82rem] text-zinc-600">${item.installments}</p>
             </div>
-            <p class="mt-1 font-geist text-[0.82rem] text-zinc-600">${item.installments}</p>
           </article>
         `;
       })
@@ -348,7 +384,9 @@ class AppBuyTogether extends HTMLElement {
   }
 
   renderMobileSummaryCard() {
-    const firstSelected = this.items.find((item) => this.selectedIds.has(item.id));
+    const firstSelected = this.items.find((item) =>
+      this.selectedIds.has(item.id),
+    );
     const item = firstSelected || this.items[0];
     const isSelected = this.selectedIds.has(item.id);
 
@@ -375,7 +413,7 @@ class AppBuyTogether extends HTMLElement {
             <h3 class="line-clamp-2 font-geist text-[0.78rem] leading-[1.35] text-zinc-600">${item.title}</h3>
             <div class="mt-1.5 flex items-center gap-2">
               <span class="font-geist text-[0.76rem] text-zinc-400 line-through">${this.formatPrice(
-                item.oldPrice
+                item.oldPrice,
               )}</span>
               <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
             </div>
@@ -387,7 +425,9 @@ class AppBuyTogether extends HTMLElement {
   }
 
   renderMobileCarouselCards() {
-    const firstSelected = this.items.find((item) => this.selectedIds.has(item.id));
+    const firstSelected = this.items.find((item) =>
+      this.selectedIds.has(item.id),
+    );
     const leadId = firstSelected?.id;
     const carouselItems = this.items.filter((item) => item.id !== leadId);
     const itemsToRender = carouselItems.length ? carouselItems : this.items;
@@ -400,8 +440,8 @@ class AppBuyTogether extends HTMLElement {
         const isOptionsOpen = isConfigurable && this.openOptionsId === item.id;
 
         return `
-          <article class="w-[286px] max-w-[calc(100vw-48px)] shrink-0 snap-start rounded-[20px] bg-[#ecebe6] p-3">
-            <div class="relative overflow-hidden rounded-[18px] bg-[#d9dbd8]">
+          <article class="min-h-[454px] w-[302px] max-w-[calc(100vw-40px)] shrink-0 snap-start overflow-hidden rounded-[24px] bg-[#ecebe6]">
+            <div class="relative overflow-hidden bg-[#d9dbd8]">
               <button
                 type="button"
                 data-action="toggle-combo-item"
@@ -422,11 +462,13 @@ class AppBuyTogether extends HTMLElement {
             ${
               isConfigurable
                 ? `
-                  <div class="relative mt-2">
-                    <div class="overflow-hidden transition-all duration-300 ease-out ${
-                      isOptionsOpen ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+                  <div class="relative px-3 pt-2">
+                    <div class="overflow-hidden px-1 pt-1 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isOptionsOpen
+                        ? " translate-y-0 opacity-100"
+                        : "max-h-0 translate-y-6 opacity-0 pointer-events-none"
                     }">
-                      <div class="h-[286px] w-full rounded-t-[16px] rounded-b-none border border-[#dedcd3] border-b-0 bg-[#f1f1ef] pt-2 pr-4 pb-4 pl-4 shadow-[0_14px_30px_rgba(0,0,0,0.18)]">
+                      <div class="max-h-[320px] w-full overflow-y-auto rounded-t-[16px] rounded-b-none border border-[#dedcd3] border-b-0 bg-[#f1f1ef] pt-2 pr-4 pb-4 pl-4 shadow-[0_14px_30px_rgba(0,0,0,0.18)]">
                         <div class="mb-2 flex items-center justify-between">
                           <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
                           <button type="button" data-action="close-combo-options" class="inline-flex h-6 w-6 items-center justify-center text-zinc-500">
@@ -474,7 +516,9 @@ class AppBuyTogether extends HTMLElement {
                       data-action="${isOptionsOpen ? "close-combo-options" : "open-combo-options"}"
                       data-id="${item.id}"
                       class="inline-flex h-[34px] w-full items-center justify-between border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600 transition-[border-radius] duration-300 ${
-                        isOptionsOpen ? "rounded-b-[16px] rounded-t-none border-t-0" : "rounded-full"
+                        isOptionsOpen
+                          ? "rounded-b-[16px] rounded-t-none border-t-0"
+                          : "rounded-full"
                       }"
                     >
                       Escolher opções
@@ -485,14 +529,16 @@ class AppBuyTogether extends HTMLElement {
                 : ""
             }
 
-            <h3 class="mt-3 font-geist text-[0.95rem] leading-snug text-zinc-600">${item.title}</h3>
-            <div class="mt-2.5 flex items-center gap-2">
-              <span class="font-geist text-[0.82rem] text-zinc-400 line-through">${this.formatPrice(
-                item.oldPrice
-              )}</span>
-              <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+            <div class="px-5 pb-5 pt-5">
+              <h3 class="font-geist text-[0.95rem] leading-snug text-zinc-600">${item.title}</h3>
+              <div class="mt-2.5 flex items-center gap-2">
+                <span class="font-geist text-[0.82rem] text-zinc-400 line-through">${this.formatPrice(
+                  item.oldPrice,
+                )}</span>
+                <span class="align-middle font-geist text-[14px] leading-[20px] font-normal tracking-[0em] text-zinc-900">${this.formatPrice(item.price)}</span>
+              </div>
+              <p class="mt-1 font-geist text-[0.82rem] text-zinc-600">${item.installments}</p>
             </div>
-            <p class="mt-1 font-geist text-[0.82rem] text-zinc-600">${item.installments}</p>
           </article>
         `;
       })
@@ -518,7 +564,7 @@ class AppBuyTogether extends HTMLElement {
           <div class="space-y-3 lg:hidden">
             ${this.renderMobileSummaryCard()}
 
-            <div data-combo-mobile-track class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 hide-scrollbar">
+            <div data-combo-mobile-track class="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-1 hide-scrollbar">
               ${this.renderMobileCarouselCards()}
             </div>
 
@@ -527,7 +573,7 @@ class AppBuyTogether extends HTMLElement {
             </div>
           </div>
 
-          <div data-combo-track class="hidden gap-4 overflow-x-auto pb-2 hide-scrollbar lg:flex lg:gap-4">
+          <div data-combo-track class="hidden gap-5 overflow-x-auto pb-2 hide-scrollbar lg:flex lg:gap-5">
             ${this.renderDesktopCards()}
           </div>
 
