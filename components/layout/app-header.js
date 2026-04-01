@@ -193,7 +193,7 @@ class AppHeader extends HTMLElement {
     this.innerHTML = `
 		<header class="w-full px-4 pb-2 lg:px-9 lg:pt-4 lg:pb-0">
 			<nav
-				class="relative mt-2 flex w-full items-center justify-between gap-4 overflow-visible rounded-[40px] bg-[rgba(10,10,11,0.88)] px-4 py-2 pl-5 text-zinc-100 backdrop-blur-md h-[72px] lg:mt-0 lg:h-[76px] lg:px-10 lg:pl-10"
+				class="relative mt-2 flex w-full items-center justify-between gap-4 overflow-visible rounded-[40px] bg-[rgba(10,10,11,0.88)] px-4 py-2 pl-5 text-zinc-100 backdrop-blur-md h-[72px] lg:mt-0 lg:h-[76px] lg:px-10 lg:pl-10 lg:gap-2"
 				data-nav-root
 			>
 				<a class="hidden lg:block shrink-0 text-[2rem] font-extralight leading-none tracking-[0.42em] text-[#d8cc5b]" href="/">LIME</a>
@@ -251,7 +251,7 @@ class AppHeader extends HTMLElement {
 					</div>
 				</div>
 
-				<div class="hidden lg:flex shrink-0 items-center gap-2 ml-3">
+				<div class="hidden lg:flex shrink-0 items-center gap-2">
 					<button 
 						type="button"
 						aria-label="Conta"

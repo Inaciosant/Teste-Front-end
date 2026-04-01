@@ -427,7 +427,7 @@ class AppBuyTogether extends HTMLElement {
         const isOptionsOpen = isConfigurable && this.openOptionsId === item.id;
 
         return `
-          <article class="h-[454px] w-[302px] shrink-0 snap-start overflow-hidden rounded-[24px] bg-[#ecebe6]">
+          <article class="h-[430px] w-[260px] shrink-0 snap-start overflow-hidden rounded-[24px] bg-[#ecebe6]">
             <div class="relative overflow-hidden bg-[#d9dbd8]">
               <button
                 type="button"
@@ -444,77 +444,103 @@ class AppBuyTogether extends HTMLElement {
 
               <img src="${item.image}" alt="${item.title}" class="h-[250px] w-full object-cover object-top" />
 
-            </div>
+              <div class="absolute bottom-2 left-2 right-2">
+                ${
+                  isConfigurable
+                    ? `
+                    <div class="relative h-[230px] w-full">
 
-            ${
-              isConfigurable
-                ? `
-                  <div class="relative px-3 pt-2">
-                    <div class="overflow-hidden px-1 pt-1 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                      isOptionsOpen
-                        ? " translate-y-0 opacity-100"
-                        : "max-h-0 translate-y-6 opacity-0 pointer-events-none"
-                    }">
-                      <div class="max-h-[320px] w-full overflow-y-auto rounded-t-[16px] rounded-b-none border border-[#dedcd3] border-b-0 bg-[#f1f1ef] pt-2 pr-4 pb-4 pl-4 shadow-[0_14px_30px_rgba(0,0,0,0.18)]">
-                        <div class="mb-2 flex items-center justify-between">
-                          <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
-                          <button type="button" data-action="close-combo-options" class="inline-flex h-6 w-6 items-center justify-center text-zinc-500">
-                            <i data-lucide="x" class="h-4 w-4"></i>
-                          </button>
-                        </div>
+                      <button
+                        type="button"
+                        data-action="${isOptionsOpen ? "close-mobile-options" : "open-mobile-options"}"
+                        data-id="${item.id}"
+                        class="absolute bottom-0 left-0 right-0 z-20 inline-flex h-[36px] w-full items-center justify-between rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600 transition-all duration-300 ease-out ${
+                          isOptionsOpen
+                            ? "opacity-0 pointer-events-none scale-95"
+                            : "opacity-100 scale-100"
+                        }"
+                      >
+                        Escolher opções
+                        <i data-lucide="chevron-down" class="h-4 w-4 text-zinc-500 transition-transform ${isOptionsOpen ? "rotate-180" : ""}"></i>
+                      </button>
 
-                        <div class="space-y-2">
-                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                            Cores disponíveis
-                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                          </button>
+                      <div class="absolute inset-0 z-20 origin-bottom transform-gpu transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        isOptionsOpen
+                          ? "translate-y-0 scale-y-100 opacity-100 pointer-events-auto"
+                          : "translate-y-full scale-y-95 opacity-0 pointer-events-none"
+                      }">
+                        <div class="h-full overflow-y-auto rounded-[18px] bg-[#f1f1ef] p-3 shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
+                          
+                          <div class="mb-2 flex items-center justify-between">
+                            <p class="font-geist text-[0.9rem] text-zinc-500">Escolher opções</p>
+                            <button type="button" data-action="close-mobile-options" class="inline-flex h-6 w-6 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-200">
+                              <i data-lucide="x" class="h-4 w-4"></i>
+                            </button>
+                          </div>
 
-                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                            Escolha seu CHARMS
-                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                          </button>
+                          <div class="space-y-2">
+                            <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                              Cores disponíveis
+                              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                            </button>
 
-                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                            Iniciais
-                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                          </button>
+                            <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                              Escolha seu CHARMS
+                              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                            </button>
 
-                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-500">
-                            Inserir imagem para personalizar
-                            <i data-lucide="image-plus" class="h-4 w-4"></i>
-                          </button>
+                            <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                              Iniciais
+                              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                            </button>
 
-                          <input
-                            type="text"
-                            placeholder="Digite aqui o que iremos gravar"
-                            class="h-[32px] w-full rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-600 outline-none placeholder:text-zinc-500"
-                          />
+                            <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-500">
+                              Inserir imagem para personalizar
+                              <i data-lucide="image-plus" class="h-4 w-4"></i>
+                            </button>
 
-                          <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
-                            Modelo da imagem
-                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                          </button>
+                            <input
+                              type="text"
+                              placeholder="Digite aqui o que iremos gravar"
+                              class="h-[32px] w-full rounded-full border border-[#c6c5c1] bg-[#ececea] px-4 font-geist text-[0.82rem] text-zinc-600 outline-none placeholder:text-zinc-500"
+                            />
+
+                            <button type="button" class="inline-flex h-[32px] w-full items-center justify-between rounded-full bg-[#d6d5d2] px-4 font-geist text-[0.82rem] text-zinc-600">
+                              Modelo da imagem
+                              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                            </button>
+                          </div>
+                          
                         </div>
                       </div>
                     </div>
-
-                    <button
-                      type="button"
-                      data-action="${isOptionsOpen ? "close-combo-options" : "open-combo-options"}"
-                      data-id="${item.id}"
-                      class="inline-flex h-[34px] w-full items-center justify-between border border-[#dedcd3] bg-[#f5f5f2] px-4 font-geist text-[0.82rem] text-zinc-600 transition-[border-radius] duration-300 ${
-                        isOptionsOpen
-                          ? "rounded-b-[16px] rounded-t-none border-t-0"
-                          : "rounded-full"
-                      }"
-                    >
-                      Escolher opções
-                      <i data-lucide="chevron-down" class="h-4 w-4 text-zinc-500 transition-transform ${isOptionsOpen ? "rotate-180" : ""}"></i>
-                    </button>
-                  </div>
-                `
-                : ""
-            }
+                    `
+                    : `
+                      <select
+                        data-action="size-select"
+                        data-id="${item.id}"
+                        class="h-[36px] w-full appearance-none rounded-full border border-[#dedcd3] bg-[#f5f5f2] px-4 pr-8 font-geist text-[0.82rem] text-zinc-600"
+                      >
+                        <option value="" disabled ${
+                          this.selectedSizes[item.id] ? "" : "selected"
+                        }>
+                          Tamanho
+                        </option>
+                        ${item.sizes
+                          .map(
+                            (size) =>
+                              `<option value="${size}" ${
+                                this.selectedSizes[item.id] === size
+                                  ? "selected"
+                                  : ""
+                              }>${size}</option>`,
+                          )
+                          .join("")}
+                      </select>
+                    `
+                }
+              </div>
+            </div>
 
             <div class="px-5 pb-5 pt-5">
               <h3 class="font-geist text-[0.95rem] leading-snug text-zinc-600">${item.title}</h3>
