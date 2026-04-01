@@ -2,7 +2,7 @@ class AppCart extends HTMLElement {
     connectedCallback() {
         this.render();
         this.bindEvents();
-        this.updateCartUI(); // Renderiza os itens iniciais
+        this.updateCartUI(); 
     }
 
     bindEvents() {
@@ -13,7 +13,6 @@ class AppCart extends HTMLElement {
         this.itemsContainer = this.querySelector("[data-cart-items]");
         this.subtotalElement = this.querySelector("[data-cart-subtotal]");
 
-        // Abrir/Fechar pelo evento global
         document.addEventListener("toggle-cart", (e) => {
             if (e.detail?.open) {
                 this.openCart();
@@ -22,23 +21,19 @@ class AppCart extends HTMLElement {
             }
         });
 
-        // Atualizar interface quando o Cart.js avisar
         document.addEventListener("cart-updated", () => {
             this.updateCartUI();
         });
 
-        // Fechar carrinho
         closeBtn?.addEventListener("click", () => this.closeCart());
         continueBtn?.addEventListener("click", () => this.closeCart());
         
-        // Fechar clicando fora do painel
         this.cartOverlay?.addEventListener("click", (e) => {
             if (e.target === this.cartOverlay) {
                 this.closeCart();
             }
         });
 
-        // Delegação de eventos para as lixeiras
         this.itemsContainer?.addEventListener("click", (e) => {
             const removeBtn = e.target.closest("[data-remove-item]");
             if (removeBtn) {
@@ -68,7 +63,7 @@ class AppCart extends HTMLElement {
         setTimeout(() => {
             this.cartOverlay.classList.add("hidden");
             this.cartOverlay.classList.remove("flex");
-        }, 300); // Tempo da transição
+        }, 300); 
         document.body.style.overflow = "";
     }
 

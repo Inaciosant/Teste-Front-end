@@ -4,7 +4,6 @@ class TopBar extends HTMLElement {
         this.render();
     }
 
-
     render() {
         this.innerHTML = `
         <section class="w-full  px-5 sm:px-6">

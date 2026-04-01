@@ -214,8 +214,9 @@ class AppBuyTogether extends HTMLElement {
     }
 
     const maxScrollLeft = track.scrollWidth - track.clientWidth;
-    const progressValue = maxScrollLeft > 0 ? (track.scrollLeft / maxScrollLeft) * 100 : 0;
-    
+    const progressValue =
+      maxScrollLeft > 0 ? (track.scrollLeft / maxScrollLeft) * 100 : 0;
+
     progress.style.width = `${progressValue}%`;
   }
 

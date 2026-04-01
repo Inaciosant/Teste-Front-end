@@ -1,4 +1,3 @@
-// cart.js
 const CART_KEY = 'lime_cart_items';
 
 const Cart = {

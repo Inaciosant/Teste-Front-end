@@ -16,7 +16,6 @@ class AppRelatedProducts extends HTMLElement {
     }
     
     this.refreshIcons();
-    // Initial progress computation next frame to let layout settle
     setTimeout(() => this.handleScroll(), 50);
   }
 
