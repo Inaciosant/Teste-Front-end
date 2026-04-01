@@ -23,6 +23,25 @@ class AppMobileMenu extends HTMLElement {
         this.closeMenu();
       }
     });
+
+    const accordionTrigger = this.querySelector("[data-accordion-trigger]");
+    if (accordionTrigger) {
+      accordionTrigger.addEventListener("click", () => {
+        const content = this.querySelector("[data-accordion-content]");
+        const icon = this.querySelector("[data-accordion-icon]");
+        const isExpanded = content.classList.contains("grid-rows-[1fr]");
+        
+        if (isExpanded) {
+          content.classList.remove("grid-rows-[1fr]");
+          content.classList.add("grid-rows-[0fr]");
+          icon.classList.remove("rotate-180");
+        } else {
+          content.classList.remove("grid-rows-[0fr]");
+          content.classList.add("grid-rows-[1fr]");
+          icon.classList.add("rotate-180");
+        }
+      });
+    }
   }
 
   openMenu() {
@@ -74,10 +93,22 @@ class AppMobileMenu extends HTMLElement {
 
               <ul class="mt-6 flex flex-col px-2 text-[14px] font-geist text-zinc-800">
                   <li>
-                      <a href="./categoria.html" class="flex items-center justify-between py-3.5 transition-colors hover:text-[#d8cc5b]">
+                      <button type="button" data-accordion-trigger class="flex w-full items-center justify-between py-3.5 transition-colors hover:text-[#d8cc5b]">
                           Blusas
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-600"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                      </a>
+                          <svg data-accordion-icon width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-600 transition-transform duration-200"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </button>
+                      <div data-accordion-content class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+                          <div class="overflow-hidden">
+                              <ul class="flex flex-col gap-4 pb-4 pl-4 pt-1 text-[13.5px] text-zinc-500">
+                                  <li><a href="./categoria.html" class="block transition-colors hover:text-[#d8cc5b]">Ver tudo</a></li>
+                                  <li><a href="#" class="block transition-colors hover:text-[#d8cc5b]">Manga curta</a></li>
+                                  <li><a href="#" class="block transition-colors hover:text-[#d8cc5b]">Manga comprida</a></li>
+                                  <li><a href="#" class="block transition-colors hover:text-[#d8cc5b]">Manga bufante</a></li>
+                                  <li><a href="#" class="block transition-colors hover:text-[#d8cc5b]">Blusa de moletom</a></li>
+                                  <li><a href="#" class="block transition-colors hover:text-[#d8cc5b]">Blusa oversized</a></li>
+                              </ul>
+                          </div>
+                      </div>
                   </li>
                   <li><a href="#" class="block py-3.5 transition-colors hover:text-[#d8cc5b]">Calças</a></li>
                   <li><a href="#" class="block py-3.5 transition-colors hover:text-[#d8cc5b]">Jaquetas</a></li>

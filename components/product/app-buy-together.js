@@ -213,23 +213,10 @@ class AppBuyTogether extends HTMLElement {
       return;
     }
 
-    const totalScrollable = track.scrollWidth - track.clientWidth;
-
-    if (totalScrollable <= 0) {
-      progress.style.width = "100%";
-      progress.style.transform = "translateX(0)";
-      return;
-    }
-
-    const thumbPercent = Math.max(
-      24,
-      (track.clientWidth / track.scrollWidth) * 100,
-    );
-    const travelPercent = Math.max(0, 100 - thumbPercent);
-    const ratio = track.scrollLeft / totalScrollable;
-
-    progress.style.width = `${thumbPercent}%`;
-    progress.style.transform = `translateX(${travelPercent * ratio}%)`;
+    const maxScrollLeft = track.scrollWidth - track.clientWidth;
+    const progressValue = maxScrollLeft > 0 ? (track.scrollLeft / maxScrollLeft) * 100 : 0;
+    
+    progress.style.width = `${progressValue}%`;
   }
 
   renderDesktopCards() {
@@ -440,7 +427,7 @@ class AppBuyTogether extends HTMLElement {
         const isOptionsOpen = isConfigurable && this.openOptionsId === item.id;
 
         return `
-          <article class="min-h-[454px] w-[302px] max-w-[calc(100vw-40px)] shrink-0 snap-start overflow-hidden rounded-[24px] bg-[#ecebe6]">
+          <article class="h-[454px] w-[302px] shrink-0 snap-start overflow-hidden rounded-[24px] bg-[#ecebe6]">
             <div class="relative overflow-hidden bg-[#d9dbd8]">
               <button
                 type="button"
@@ -564,12 +551,12 @@ class AppBuyTogether extends HTMLElement {
           <div class="space-y-3 lg:hidden">
             ${this.renderMobileSummaryCard()}
 
-            <div data-combo-mobile-track class="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-1 hide-scrollbar">
+            <div data-combo-mobile-track class="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 hide-scrollbar">
               ${this.renderMobileCarouselCards()}
             </div>
 
-            <div class="relative mx-auto h-[3px] w-[56px] overflow-hidden rounded-full bg-[#dddcd4]">
-              <div data-combo-mobile-progress class="absolute left-0 top-0 h-full rounded-full bg-[#E7D158] transition-transform duration-200"></div>
+            <div class="relative mx-auto h-[4px] w-[80px] overflow-hidden rounded-full bg-[#f1f1ee]">
+              <div data-combo-mobile-progress class="absolute left-0 top-0 h-full w-[25%] rounded-full bg-[#E7D158] transition-[width] duration-150 ease-out"></div>
             </div>
           </div>
 

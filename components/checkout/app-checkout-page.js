@@ -102,9 +102,9 @@
             return `
                 <article class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 border-b border-[#d8d3c0]">
                     <div class="flex items-center gap-4 w-full sm:w-auto">
-                        <img src="${item.image || './assets/images/products/Product1.jpg'}" alt="${item.title}" class="w-[88px] h-[104px] object-cover rounded-[14px]">
+                        <img src="${item.image || './assets/images/products/Product1.jpg'}" alt="${item.name}" class="w-[88px] h-[104px] object-cover rounded-[14px]">
                         <div class="flex flex-col gap-1 max-w-[220px]">
-                            <h3 class="font-geist text-[0.95rem] leading-tight text-zinc-800">${item.title}</h3>
+                            <h3 class="font-geist text-[0.95rem] leading-tight text-zinc-800">${item.name}</h3>
                             <p class="font-geist text-[0.85rem] text-zinc-500">Tamanho: <span class="text-zinc-800">${item.size}</span></p>
                         </div>
                     </div>

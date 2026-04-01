@@ -184,10 +184,10 @@ class ProductCardHeader extends HTMLElement {
 					</div>
 				</div>
 
-				<button data-action="prev" class="absolute left-[-22px] top-[50%] z-10 hidden h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[rgba(78,78,78,0.68)] text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)] lg:flex">
+				<button data-action="prev" class="absolute left-[-22px]  top-[50%] z-10 hidden h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/45 backdrop-blur-lg text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)] lg:flex">
 					<i data-lucide="chevron-left" class="h-4 w-4"></i>
 				</button>
-				<button data-action="next" class="absolute right-[-22px] top-[50%] z-10 hidden h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[rgba(78,78,78,0.68)] text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)] lg:flex">
+				<button data-action="next" class="absolute right-[-22px] top-[50%] z-10 hidden h-[48px] w-[48px] -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/45 backdrop-blur-lg text-white shadow-[0_10px_24px_rgba(0,0,0,0.28)] duration-300 hover:bg-[rgba(92,92,92,0.82)] lg:flex">
 					<i data-lucide="chevron-right" class="h-4 w-4"></i>
 				</button>
 

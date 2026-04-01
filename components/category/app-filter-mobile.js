@@ -246,7 +246,7 @@
             <span data-m-price-label-max>R$ ${this.formatNumber(this.maxPrice || this.priceBounds.max)}</span>
           </div>
 
-          <div class="relative mb-6">
+          <div class="relative mb-10">
             <div class="absolute left-0 right-0 top-[8px] h-[5px] rounded-full bg-[#f1f1ee]"></div>
             <div data-m-price-active-track class="absolute top-[8px] h-[5px] rounded-full bg-[#E7D158]"></div>
             <input
@@ -271,7 +271,7 @@
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-3 mt-6">
             <input
               type="text"
               data-field="m-min-price"

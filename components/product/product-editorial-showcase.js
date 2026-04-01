@@ -39,6 +39,10 @@ class ProductEditorialShowcase extends HTMLElement {
         navigation: {
           prevEl: carousel.querySelector("[data-editorial-prev]"),
           nextEl: carousel.querySelector("[data-editorial-next]")
+        },
+        pagination: {
+          el: carousel.querySelector(".swiper-pagination"),
+          type: "progressbar"
         }
       });
       this.swipers.push(swiper);
@@ -87,16 +91,38 @@ class ProductEditorialShowcase extends HTMLElement {
             <div class="swiper-wrapper">
               ${this.renderCards()}
             </div>
+            <div class="swiper-pagination mt-6 lg:hidden"></div>
           </div>
         </div>
       </div>
+      <style>
+        product-editorial-showcase .swiper-pagination.swiper-pagination-progressbar {
+          position: relative;
+          width: 80px;
+          height: 4px;
+          margin: 24px auto 0;
+          background: #f1f1ee;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+        product-editorial-showcase .swiper-pagination-progressbar.swiper-pagination-horizontal.swiper-pagination-progressbar {
+            top: auto;
+            bottom: auto;
+            left: 0;
+            transform: none;
+        }
+        product-editorial-showcase .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+          background: #E7D158;
+          border-radius: 4px;
+        }
+      </style>
     `;
   }
 
   render() {
     this.innerHTML = `
       <section class="col-span-12 w-full pt-10 pb-16 overflow-hidden bg-white">
-        <div class="grid w-full grid-cols-1 lg:grid-cols-2 lg:grid-rows-[520px_520px] gap-y-8 lg:gap-y-0">
+        <div class="grid w-full grid-cols-1 gap-y-8 lg:grid-cols-2 lg:grid-rows-[520px_520px] lg:gap-y-0">
           
           <div class="flex flex-col w-full h-full relative z-20">
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3 px-4 md:hidden relative z-30">
@@ -113,11 +139,11 @@ class ProductEditorialShowcase extends HTMLElement {
             </article>
           </div>
 
-          <div class="-mt-24 md:mt-0 flex flex-col justify-center min-w-0 px-4 lg:pl-12 lg:pr-4 relative z-30">
+          <div class="-mt-24 md:mt-0 flex w-full flex-col justify-center min-w-0 px-4 lg:pl-12 lg:pr-20 xl:pr-24 relative z-30 lg:mr-auto lg:max-w-[700px]">
             ${this.renderCarousel("Óculos")}
           </div>
 
-          <div class="-mt-24 md:mt-0 flex flex-col justify-center order-last lg:order-none min-w-0 px-4 lg:pr-12 lg:pl-4 relative z-30">
+          <div class="-mt-24 md:mt-0 flex w-full flex-col justify-center order-last lg:order-none min-w-0 px-4 lg:pr-12 lg:pl-20 xl:pl-24 relative z-30 lg:ml-auto lg:max-w-[700px]">
             ${this.renderCarousel("Winter 24 Collection")}
           </div>
 

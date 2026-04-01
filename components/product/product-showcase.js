@@ -69,6 +69,10 @@ class ProductShowcase extends HTMLElement {
         prevEl: prevButton,
         nextEl: nextButton
       },
+      pagination: {
+        el: this.querySelector(".swiper-pagination"),
+        type: "progressbar"
+      },
       breakpoints: {
         1024: {
           allowTouchMove: false
@@ -119,13 +123,35 @@ class ProductShowcase extends HTMLElement {
             </div>
           </div>
 
-          <div data-showcase-swiper class="swiper w-full overflow-hidden pb-2">
+          <div data-showcase-swiper class="swiper w-full overflow-hidden pb-2 lg:pb-0">
             <div class="swiper-wrapper">
               ${this.renderCards()}
             </div>
+            <div class="swiper-pagination mt-6 lg:hidden"></div>
           </div>
         </div>
       </section>
+      <style>
+        product-showcase .swiper-pagination.swiper-pagination-progressbar {
+          position: relative;
+          width: 80px;
+          height: 4px;
+          margin: 24px auto 0;
+          background: #f1f1ee;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+        product-showcase .swiper-pagination-progressbar.swiper-pagination-horizontal.swiper-pagination-progressbar {
+            top: auto;
+            bottom: auto;
+            left: 0;
+            transform: none;
+        }
+        product-showcase .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+          background: #E7D158;
+          border-radius: 4px;
+        }
+      </style>
     `;
   }
 }
