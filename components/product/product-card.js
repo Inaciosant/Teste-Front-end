@@ -61,14 +61,14 @@ class ProductCard extends HTMLElement {
     const href = this.getAttribute("href") || "";
 
     const articleClass = compactMobile
-      ? "flex h-full max-[1023px]:h-[285px] flex-col overflow-hidden rounded-[24px] max-[1023px]:rounded-[8px] bg-[#f1f0eb] font-geist transition-shadow hover:shadow-md"
-      : "flex h-full flex-col overflow-hidden rounded-[24px] bg-[#f1f0eb] font-geist transition-shadow hover:shadow-md";
+      ? "group/img flex h-full max-[1023px]:h-[285px] flex-col overflow-hidden rounded-[24px] max-[1023px]:rounded-[8px] bg-[#f1f0eb] font-geist transition-shadow hover:shadow-md"
+      : "group/img flex h-full flex-col overflow-hidden rounded-[24px] bg-[#f1f0eb] font-geist transition-shadow hover:shadow-md";
     const imageWrapClass = compactMobile
       ? "relative h-[250px] md:h-[280px] max-[1023px]:h-[156px] w-full shrink-0 bg-[#d9dbd8]"
       : "relative h-[250px] md:h-[280px] w-full shrink-0 bg-[#d9dbd8]";
     const badgeClass = compactMobile
-      ? "absolute left-4 top-4 max-[1023px]:left-2 max-[1023px]:top-2 rounded-full bg-white px-3.5 py-1.5 max-[1023px]:px-2 max-[1023px]:py-1 text-[12px] max-[1023px]:text-[10px] font-medium text-zinc-800 shadow-sm"
-      : "absolute left-4 top-4 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-medium text-zinc-800 shadow-sm";
+      ? "absolute left-4 top-4 z-20 max-[1023px]:left-2 max-[1023px]:top-2 rounded-full bg-white px-3.5 py-1.5 max-[1023px]:px-2 max-[1023px]:py-1 text-[12px] max-[1023px]:text-[10px] font-medium text-zinc-800 shadow-sm"
+      : "absolute left-4 top-4 z-20 rounded-full bg-white px-3.5 py-1.5 text-[12px] font-medium text-zinc-800 shadow-sm";
     const contentClass = compactMobile
       ? "flex flex-1 flex-col px-5 pt-5 pb-6 max-[1023px]:px-2.5 max-[1023px]:pt-2.5 max-[1023px]:pb-3"
       : "flex flex-1 flex-col px-5 pt-5 pb-6";
@@ -94,7 +94,12 @@ class ProductCard extends HTMLElement {
           <img
             src="${image}"
             alt="${title.replace(/<br\s*\/?>/gi, " ")}"
-            class="h-full w-full object-cover object-top"
+            class="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-500 ease-in-out group-hover/img:opacity-0 z-10"
+          />
+          <img
+            src="./assets/images/products/Product2.jpg"
+            alt="${title.replace(/<br\s*\/?>/gi, " ")} Hover"
+            class="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-500 ease-in-out opacity-0 group-hover/img:opacity-100"
           />
           <div class="${badgeClass}">
             ${badge}

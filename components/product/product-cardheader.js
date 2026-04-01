@@ -98,8 +98,8 @@ class ProductCardHeader extends HTMLElement {
 		return this.products
 			.map((product) => `
 					<div class="swiper-slide product-card-mobile shrink-0 w-[302px] max-w-full">
-						<a href="./produto.html?id=${product.id}" class="flex h-[454px] w-full flex-col rounded-[24px] bg-[#111111] p-4 shadow-2xl no-underline">
-							<div class="relative h-[250px] md:h-[280px] w-full shrink-0 overflow-hidden rounded-[20px] bg-zinc-200">
+						<a href="./produto.html?id=${product.id}" class="flex h-[454px] w-full flex-col overflow-hidden rounded-[24px] bg-[#111111] shadow-2xl no-underline">
+							<div class="relative h-[250px] md:h-[280px] w-full shrink-0 bg-zinc-200">
 								<img
 									src="${product.image}"
 									class="h-full w-full object-cover object-top"
@@ -110,7 +110,7 @@ class ProductCardHeader extends HTMLElement {
 								</div>
 							</div>
 
-							<div class="flex flex-1 flex-col pt-4">
+							<div class="flex flex-1 flex-col px-6 pt-5 pb-6">
 								<h3 class="mb-4 min-h-[48px] text-[13px] leading-[1.55] text-zinc-400">
 									${product.title}
 								</h3>

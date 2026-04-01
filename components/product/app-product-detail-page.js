@@ -358,11 +358,13 @@ class AppProductDetailPage extends HTMLElement {
         <div class="mx-auto w-full max-w-[1400px] px-6 lg:px-20 xl:px-24">
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-4">
             <div class="lg:col-span-8">
-              <div class="lg:hidden">
-                <article class="relative h-[340px] overflow-hidden rounded-[26px] bg-[#d9dbd8] sm:h-[420px]">
-                  <img src="${currentImage}" alt="${this.product.title}" class="h-full w-full object-cover object-top" />
-                  <span class="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[0.75rem] font-geist text-zinc-700 sm:left-4 sm:top-4">20% off</span>
-                </article>
+              <div class="lg:hidden flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar w-full pb-2">
+                ${this.product.images.map((img, index) => `
+                  <article class="relative h-[340px] w-full shrink-0 snap-center overflow-hidden rounded-[26px] bg-[#d9dbd8] sm:h-[420px]">
+                    <img src="${img}" alt="${this.product.title} - ${index + 1}" class="h-full w-full object-cover object-top" />
+                    <span class="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[0.75rem] font-geist text-zinc-700 sm:left-4 sm:top-4">20% off</span>
+                  </article>
+                `).join("")}
               </div>
 
               <div class="hidden h-[443px] w-full max-w-[902px] grid-cols-2 gap-4 lg:grid">
