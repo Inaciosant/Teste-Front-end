@@ -31,23 +31,23 @@ class AppNewsletter extends HTMLElement {
     render() {
         this.innerHTML = `
             <section class="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-9 py-6">
-                <div class="flex flex-col xl:flex-row items-center justify-between w-full bg-[#E7D158] rounded-[24px] xl:rounded-full px-4 sm:px-6 py-6 xl:px-8 xl:py-3 gap-6 xl:gap-4 overflow-hidden">
+                <div class="flex flex-col lg:flex-row items-center justify-between w-full bg-[#E7D158] rounded-[24px] lg:rounded-full px-4 sm:px-6 py-6 lg:px-8 lg:py-3 gap-6 lg:gap-4 overflow-hidden">
                     
-                    <div class="flex w-full min-w-0 flex-col xl:flex-row items-center gap-2 xl:gap-10 text-center xl:text-left">
-                        <h2 class="text-[18px] xl:text-[20px] font-normal text-zinc-900 whitespace-normal leading-tight">
+                    <div class="flex w-full min-w-0 flex-col lg:flex-row items-center gap-2 lg:gap-10 text-center lg:text-left">
+                        <h2 class="text-[18px] lg:text-[20px] font-normal text-zinc-900 whitespace-normal leading-tight">
                             Receba nossas ofertas
                         </h2>
-                        <p class="text-[13px] xl:text-[14px] text-zinc-800 whitespace-normal xl:whitespace-nowrap break-words leading-relaxed max-w-[34ch] xl:max-w-none">
+                        <p class="text-[13px] lg:text-[14px] text-zinc-800 whitespace-normal lg:whitespace-nowrap break-words leading-relaxed max-w-[34ch] lg:max-w-none">
                             Se cadastre na newsletter e fique por dentro das novidades
                         </p>
                     </div>
 
-                    <form class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full xl:w-auto">
+                    <form class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
                         <input 
                             type="email" 
                             placeholder="Coloque seu e-mail" 
                             required 
-                            class="h-[44px] w-full min-w-0 xl:w-[360px] rounded-full bg-white px-5 text-[14px] text-zinc-800 placeholder:text-zinc-400 outline-none border border-transparent focus:border-zinc-300" 
+                            class="h-[44px] w-full min-w-0 lg:w-[360px] rounded-full bg-white px-5 text-[14px] text-zinc-800 placeholder:text-zinc-400 outline-none border border-transparent focus:border-zinc-300" 
                         />
                         <button 
                             type="submit" 
