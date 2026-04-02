@@ -385,11 +385,11 @@ class AppProductDetailPage extends HTMLElement {
                 </article>
               </div>
 
-              <div class="mt-4 flex gap-3 overflow-x-auto pb-1 hide-scrollbar lg:w-full lg:max-w-[902px] lg:flex-wrap lg:overflow-visible lg:pb-0">
+              <div class="mt-4 hidden lg:flex gap-3 overflow-x-auto pb-1 hide-scrollbar lg:w-full lg:max-w-[902px] lg:flex-wrap lg:overflow-visible lg:pb-0">
                 ${this.product.images
                   .map(
                     (image, index) => `
-                      <button type="button" data-action="select-thumb" data-index="${index}" class="h-[86px] w-[86px] shrink-0 overflow-hidden rounded-[14px] border transition-colors sm:h-[92px] sm:w-[92px] ${
+                      <button type="button" data-action="select-thumb" data-index="${index}" class="h-[86px] w-[86px] shrink-0 overflow-hidden rounded-[14px] border transition-colors sm:h-[92px] sm:w-[92px]  ${
                         this.selectedImageIndex === index
                           ? "border-zinc-700"
                           : "border-transparent hover:border-zinc-300"
